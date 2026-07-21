@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Injury Lawyer Directory | All 50 States</title>
+  <meta name="description" content="Looking for a personal injury lawyer near me? Search our nationwide directory of personal injury lawyers and attorneys across all 50 states by zip code, state, and rating.">
+  <link rel="canonical" href="https://personalinjurylawyerhub.com/">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/vendor/leaflet.css">
+  <link rel="stylesheet" href="/vendor/MarkerCluster.css">
+  <link rel="stylesheet" href="/vendor/MarkerCluster.Default.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Personal Injury Lawyer Hub",
+    "url": "https://personalinjurylawyerhub.com/",
+    "description": "Nationwide directory of personal injury lawyers and attorneys across all 50 states."
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/">Personal Injury <span>Lawyer Hub</span></a>
+      <nav class="site-nav">
+        <a href="/" class="active">Home</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about.html">About</a>
+        <a href="/find.html">Find</a>
+        <a href="/partners.html">Partners</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero-heading">
+    <div class="container">
+      <h1>Personal Injury Lawyer Directory</h1>
+      <p>Find a personal injury lawyer near me. Search verified listings across all 50 states.</p>
+    </div>
+  </section>
+
+  <section class="map-shell" id="directory">
+    <aside class="listings-panel">
+      <div class="controls">
+        <div class="zip-row">
+          <input type="text" id="zip-input" placeholder="Enter zip code" inputmode="numeric" maxlength="5" aria-label="Search by zip code">
+          <button class="btn" id="zip-btn">Search</button>
+        </div>
+        <select id="state-filter" aria-label="Filter by state">
+          <option value="">All States</option>
+        </select>
+        <select id="rating-filter" aria-label="Filter by minimum rating">
+          <option value="">Any Rating</option>
+          <option value="4.5">4.5 stars and up</option>
+          <option value="4">4 stars and up</option>
+          <option value="3">3 stars and up</option>
+        </select>
+        <select id="sort-select" aria-label="Sort listings">
+          <option value="rating">Sort: Highest Rated</option>
+          <option value="reviews">Sort: Most Reviews</option>
+          <option value="name">Sort: Name A-Z</option>
+        </select>
+        <select id="type-filter" aria-label="Filter by business type">
+          <option value="">All Types</option>
+        </select>
+        <div class="toggles">
+          <button class="toggle-btn on" id="list-toggle" type="button">Hide List</button>
+          <button class="toggle-btn" id="satellite-toggle" type="button">Satellite View</button>
+        </div>
+      </div>
+      <div class="results-meta" id="results-meta">Loading listings...</div>
+      <div class="cards" id="cards"></div>
+    </aside>
+    <div class="map-panel">
+      <div id="map"></div>
+    </div>
+  </section>
+
+  <section class="content home-intro">
+    <div class="container">
+      <h2>Find a Personal Injury Lawyer Near You</h2>
+      <p>When you have been injured in an accident, choosing the right attorney is one of the most important decisions you will make. Personal Injury Lawyer Hub is a nationwide directory of personal injury lawyers and personal injury attorneys covering all 50 states. Use the interactive map above to search by zip code, filter by state and rating, and compare firms side by side.</p>
+      <h2>How to Use This Directory</h2>
+      <p>Enter your zip code in the search bar to center the map on your area, or browse by state using the filter. Each listing card shows the firm name, address, overall rating, review count, and a quoted client review so you can quickly evaluate your options. Click any card to locate the firm on the map.</p>
+      <p>Prefer to browse by state? Visit our <a href="/find.html">Find a Lawyer</a> page for a state-by-state index, or read the latest guidance on our <a href="/blog/">blog</a>.</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/disclaimer.html">Disclaimer</a></li>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/sitemap.html">Sitemap</a></li>
+      </ul>
+      <p class="footer-legal">Personal Injury Lawyer Hub is a directory service only. We are not a law firm and do not provide legal advice. Listing information is compiled from publicly available sources and does not constitute an endorsement or attorney referral. Copyright 2026 PersonalInjuryLawyerHub.com. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/vendor/leaflet.js"></script>
+  <script src="/vendor/leaflet.markercluster.js"></script>
+  <script src="/js/map.js"></script>
+</body>
+</html>

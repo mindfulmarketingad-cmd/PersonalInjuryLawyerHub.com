@@ -1,0 +1,307 @@
+/* PersonalInjuryLawyerHub.com - Serious, authoritative burgundy and white theme */
+
+:root {
+  --burgundy: #6e1423;
+  --burgundy-dark: #4c0d19;
+  --burgundy-light: #8e1f33;
+  --cream: #faf7f5;
+  --ink: #1f1a1b;
+  --gray: #6b6265;
+  --line: #e4dcde;
+  --white: #ffffff;
+  --gold: #b8860b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  background: var(--white);
+  line-height: 1.65;
+}
+
+a { color: var(--burgundy); }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+
+/* Header */
+.site-header {
+  background: var(--burgundy);
+  color: var(--white);
+  border-bottom: 4px solid var(--burgundy-dark);
+}
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+  gap: 0.75rem;
+}
+.brand {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.brand span { color: #e8c9ce; font-weight: 400; }
+.site-nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-left: 1.4rem;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+}
+.site-nav a:hover, .site-nav a.active { border-bottom-color: var(--white); }
+
+/* Page headings */
+.page-title {
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+  padding: 2.5rem 0;
+}
+.page-title h1 { font-size: 2.1rem; color: var(--burgundy-dark); }
+.page-title p { color: var(--gray); margin-top: 0.4rem; }
+
+.content { padding: 2.5rem 0 3.5rem; }
+.content h2 { color: var(--burgundy-dark); margin: 1.8rem 0 0.6rem; font-size: 1.45rem; }
+.content h3 { color: var(--burgundy); margin: 1.3rem 0 0.4rem; font-size: 1.15rem; }
+.content p, .content ul, .content ol { margin-bottom: 1rem; max-width: 75ch; }
+.content ul, .content ol { padding-left: 1.5rem; }
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  background: var(--burgundy);
+  color: var(--white);
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.95rem;
+  padding: 0.65rem 1.4rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.btn:hover { background: var(--burgundy-light); }
+.btn-outline {
+  background: transparent;
+  color: var(--burgundy);
+  border: 1px solid var(--burgundy);
+}
+.btn-outline:hover { background: var(--burgundy); color: var(--white); }
+
+/* Homepage hero: split listings + map */
+.hero-heading {
+  background: var(--burgundy);
+  color: var(--white);
+  padding: 1.4rem 0 1.6rem;
+  border-bottom: 4px solid var(--burgundy-dark);
+}
+.hero-heading h1 { font-size: 1.9rem; letter-spacing: 0.01em; }
+.hero-heading p {
+  color: #e8c9ce;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.map-shell {
+  display: flex;
+  height: calc(100vh - 140px);
+  min-height: 560px;
+  border-bottom: 4px solid var(--burgundy-dark);
+}
+.listings-panel {
+  width: 420px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
+  background: var(--cream);
+}
+.map-panel { flex: 1; position: relative; }
+#map { position: absolute; inset: 0; }
+
+/* Controls */
+.controls {
+  padding: 0.8rem;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.controls .zip-row { grid-column: 1 / -1; display: flex; gap: 0.5rem; }
+.controls input[type="text"] {
+  flex: 1;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 0.95rem;
+}
+.controls select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 0.9rem;
+  background: var(--white);
+}
+.controls .toggles { grid-column: 1 / -1; display: flex; gap: 0.5rem; }
+.toggle-btn {
+  flex: 1;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.85rem;
+  background: var(--white);
+  color: var(--burgundy);
+  border: 1px solid var(--burgundy);
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.toggle-btn.on { background: var(--burgundy); color: var(--white); }
+
+.results-meta {
+  padding: 0.5rem 0.9rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.82rem;
+  color: var(--gray);
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+/* Listing cards */
+.cards {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.8rem;
+}
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--burgundy);
+  border-radius: 3px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+}
+.card:hover { border-color: var(--burgundy); box-shadow: 0 2px 8px rgba(110, 20, 35, 0.12); }
+.card h3 { font-size: 1.05rem; color: var(--burgundy-dark); margin-bottom: 0.2rem; }
+.card .type {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray);
+}
+.card .rating {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.88rem;
+  color: var(--ink);
+  margin: 0.3rem 0;
+}
+.card .stars { color: var(--gold); letter-spacing: 0.1em; }
+.card .addr {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+.card blockquote {
+  margin-top: 0.55rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--line);
+  background: var(--cream);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: #4a4245;
+}
+.no-results { padding: 1.5rem; color: var(--gray); font-family: Arial, sans-serif; }
+
+/* Map popup */
+.leaflet-popup-content { font-family: Arial, Helvetica, sans-serif; font-size: 0.85rem; }
+.leaflet-popup-content strong { color: var(--burgundy-dark); }
+
+/* Intro section under map */
+.home-intro { background: var(--white); }
+
+/* State grid (Find page) */
+.state-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.6rem;
+  margin: 1.2rem 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.state-grid a {
+  display: block;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  text-decoration: none;
+  color: var(--burgundy-dark);
+  background: var(--cream);
+}
+.state-grid a:hover { background: var(--burgundy); color: var(--white); }
+.state-grid .count { color: var(--gray); font-size: 0.8rem; }
+.state-grid a:hover .count { color: #e8c9ce; }
+
+/* Forms */
+.form-grid { max-width: 620px; font-family: Arial, Helvetica, sans-serif; }
+.form-grid label { display: block; font-size: 0.9rem; margin: 0.9rem 0 0.25rem; color: var(--ink); }
+.form-grid input, .form-grid textarea, .form-grid select {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+.form-grid textarea { min-height: 140px; }
+.form-note { font-size: 0.8rem; color: var(--gray); margin-top: 0.6rem; }
+
+/* Footer */
+.site-footer {
+  background: var(--burgundy-dark);
+  color: #e8c9ce;
+  margin-top: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.site-footer .container { padding-top: 1.6rem; padding-bottom: 1.6rem; }
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  justify-content: center;
+  padding: 0;
+}
+.footer-links a { color: var(--white); text-decoration: none; font-size: 0.9rem; }
+.footer-links a:hover { text-decoration: underline; }
+.footer-legal {
+  text-align: center;
+  font-size: 0.78rem;
+  margin-top: 1rem;
+  color: #d3a8af;
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .map-shell { flex-direction: column; height: auto; }
+  .listings-panel { width: 100%; min-width: 0; order: 2; max-height: 60vh; }
+  .map-panel { order: 1; height: 55vh; }
+  #map { position: relative; height: 100%; }
+  .site-nav a { margin-left: 0.9rem; font-size: 0.85rem; }
+}
