@@ -38,10 +38,67 @@
   var markerLayer = L.layerGroup();
   map.addLayer(markerLayer);
 
+  var burgundyIcon = L.icon({
+    iconUrl: "/vendor/images/marker-burgundy.png",
+    iconRetinaUrl: "/vendor/images/marker-burgundy-2x.png",
+    shadowUrl: "/vendor/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
   var all = [];
   var filtered = [];
   var markersById = {};
   var CARD_LIMIT = 60;
+  var NEAR_ME_RADIUS_MILES = 100;
+  var NEAR_ME_MIN_RESULTS = 15;
+
+  var userCoords = null;
+  var nearMeMode = false;
+  var nearMeIds = null;
+
+  function milesBetween(lat1, lng1, lat2, lng2) {
+    var toRad = function (d) { return (d * Math.PI) / 180; };
+    var R = 3958.8;
+    var dLat = toRad(lat2 - lat1);
+    var dLng = toRad(lng2 - lng1);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function computeNearMeSet() {
+    if (!userCoords || !all.length) return;
+    var withDist = all
+      .filter(function (l) { return l.lat != null && l.lng != null; })
+      .map(function (l) {
+        l._distance = milesBetween(userCoords.lat, userCoords.lng, l.lat, l.lng);
+        return l;
+      })
+      .sort(function (a, b) { return a._distance - b._distance; });
+
+    var within = withDist.filter(function (l) { return l._distance <= NEAR_ME_RADIUS_MILES; });
+    var nearby = within.length >= NEAR_ME_MIN_RESULTS ? within : withDist.slice(0, NEAR_ME_MIN_RESULTS);
+    nearMeIds = {};
+    nearby.forEach(function (l) { nearMeIds[l.id] = true; });
+    nearMeMode = true;
+    applyFilters();
+    map.setView([userCoords.lat, userCoords.lng], 10);
+  }
+
+  function requestUserLocation() {
+    if (!("geolocation" in navigator)) return;
+    navigator.geolocation.getCurrentPosition(
+      function (pos) {
+        userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        computeNearMeSet();
+      },
+      function () { /* denied or unavailable — keep nationwide default */ },
+      { timeout: 8000, maximumAge: 600000 }
+    );
+  }
 
   var cardsEl = document.getElementById("cards");
   var metaEl = document.getElementById("results-meta");
@@ -73,8 +130,9 @@
     var st = stateSel.value;
     var minRating = parseFloat(ratingSel.value) || 0;
     var type = typeSel.value;
+    var pool = (nearMeMode && !st) ? all.filter(function (l) { return nearMeIds[l.id]; }) : all;
 
-    filtered = all.filter(function (l) {
+    filtered = pool.filter(function (l) {
       if (st && l.state !== st) return false;
       if (minRating && (!l.rating || l.rating < minRating)) return false;
       if (type && l.type !== type) return false;
@@ -98,7 +156,7 @@
     markersById = {};
     filtered.forEach(function (l) {
       if (l.lat == null || l.lng == null) return;
-      var marker = L.marker([l.lat, l.lng]);
+      var marker = L.marker([l.lat, l.lng], { icon: burgundyIcon });
       var popup =
         "<strong>" + esc(l.name) + "</strong><br>" +
         esc(l.address) + "<br>" +
@@ -111,8 +169,10 @@
 
   function renderCards() {
     var shown = filtered.slice(0, CARD_LIMIT);
-    metaEl.textContent = filtered.length + " listings" +
-      (stateSel.value ? " in " + (STATE_NAMES[stateSel.value] || stateSel.value) : " nationwide") +
+    var scopeLabel = (nearMeMode && !stateSel.value)
+      ? " near you"
+      : (stateSel.value ? " in " + (STATE_NAMES[stateSel.value] || stateSel.value) : " nationwide");
+    metaEl.textContent = filtered.length + " listings" + scopeLabel +
       (filtered.length > CARD_LIMIT ? " (showing top " + CARD_LIMIT + ")" : "");
 
     if (!shown.length) {
@@ -120,10 +180,12 @@
       return;
     }
 
-    cardsEl.innerHTML = shown.map(function (l) {
+    cardsEl.innerHTML = shown.map(function (l, i) {
       return (
         '<article class="card" data-id="' + l.id + '">' +
-        '<h3>' + esc(l.name) + "</h3>" +
+        '<span class="card-number">' + (i + 1) + "</span>" +
+        '<div class="card-body">' +
+        '<h3>' + (l.slug ? '<a href="/partners/' + l.slug + '/">' + esc(l.name) + '</a>' : esc(l.name)) + "</h3>" +
         '<div class="type">' + esc(l.type) + " &middot; " + esc(l.city ? l.city + ", " : "") + esc(l.state) + "</div>" +
         (l.rating
           ? '<div class="rating"><span class="stars">' + stars(l.rating) + "</span> " +
@@ -131,6 +193,8 @@
           : '<div class="rating">No rating yet</div>') +
         '<div class="addr">' + esc(l.address) + "</div>" +
         (l.quote ? "<blockquote>&ldquo;" + esc(l.quote) + "&rdquo;</blockquote>" : "") +
+        '<button class="btn btn-outline inquire-btn" type="button" data-name="' + esc(l.name) + '" data-slug="' + esc(l.slug || "") + '" data-city="' + esc(l.city || "") + '" data-state="' + esc(l.state || "") + '">Inquire</button>' +
+        "</div>" +
         "</article>"
       );
     }).join("");
@@ -165,6 +229,7 @@
         var lng = parseFloat(place.longitude);
         var abbr = place["state abbreviation"];
         if (abbr && STATE_NAMES[abbr]) {
+          nearMeMode = false;
           stateSel.value = abbr;
           applyFilters();
         }
@@ -251,15 +316,22 @@
       // Deep link support: /?state=TX
       var params = new URLSearchParams(window.location.search);
       var st = (params.get("state") || "").toUpperCase();
-      if (st && states[st]) stateSel.value = st;
-
-      applyFilters();
+      if (st && states[st]) {
+        stateSel.value = st;
+        applyFilters();
+      } else {
+        applyFilters();
+        requestUserLocation();
+      }
     })
     .catch(function () {
       metaEl.textContent = "Unable to load listings. Please refresh the page.";
     });
 
   [stateSel, ratingSel, typeSel, sortSel].forEach(function (el) {
-    el.addEventListener("change", applyFilters);
+    el.addEventListener("change", function () {
+      nearMeMode = false;
+      applyFilters();
+    });
   });
 })();

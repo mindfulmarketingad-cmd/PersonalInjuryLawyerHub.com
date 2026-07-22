@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6e1423"/>
+      <stop offset="100%" stop-color="#4c0d19"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="300" fill="url(#bg)"/>
+
+  <!-- Scales of justice -->
+  <g stroke="#faf7f5" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="220" y1="70" x2="220" y2="230"/>
+    <line x1="150" y1="230" x2="290" y2="230"/>
+    <line x1="140" y1="100" x2="300" y2="100"/>
+    <path d="M140 100 L110 155 a35 35 0 0 0 60 0 Z"/>
+    <path d="M300 100 L270 155 a35 35 0 0 0 60 0 Z"/>
+    <circle cx="220" cy="70" r="8" fill="#b8860b" stroke="none"/>
+  </g>
+
+  <!-- Map pin -->
+  <g>
+    <path d="M560 60c-44 0-80 36-80 80 0 60 80 130 80 130s80-70 80-130c0-44-36-80-80-80z" fill="#faf7f5"/>
+    <circle cx="560" cy="140" r="32" fill="#6e1423"/>
+  </g>
+
+  <!-- Decorative dots suggesting a map -->
+  <g fill="#b8860b" opacity="0.6">
+    <circle cx="640" cy="230" r="5"/>
+    <circle cx="680" cy="200" r="5"/>
+    <circle cx="700" cy="250" r="5"/>
+    <circle cx="470" cy="240" r="5"/>
+  </g>
+</svg>

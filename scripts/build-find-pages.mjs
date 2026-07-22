@@ -32,7 +32,9 @@ const STATE_NAMES = {
   WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming"
 };
 
-// Two keyword variants targeting the same underlying listings.
+// Keyword variants targeting the same underlying listings. `selfLabel` is
+// this variant's own descriptive noun phrase, used by OTHER variants' pages
+// when linking to it (e.g. "Looking for a [selfLabel] instead?").
 const VARIANTS = [
   {
     id: "lawyer",
@@ -40,7 +42,7 @@ const VARIANTS = [
     stateSlugPrefix: "personal-injury-lawyers",
     cityH1Word: "Personal Injury Lawyer",
     pluralWord: "Personal Injury Lawyers",
-    siblingLabel: "personal injury attorney"
+    selfLabel: "personal injury lawyer"
   },
   {
     id: "attorney",
@@ -48,9 +50,37 @@ const VARIANTS = [
     stateSlugPrefix: "personal-injury-attorneys",
     cityH1Word: "Personal Injury Attorneys",
     pluralWord: "Personal Injury Attorneys",
-    siblingLabel: "personal injury lawyer"
+    selfLabel: "personal injury attorney"
+  },
+  {
+    id: "slip-fall",
+    citySlugPrefix: "slip-fall-lawyer",
+    stateSlugPrefix: "slip-fall-lawyers",
+    cityH1Word: "Slip and Fall Lawyers",
+    pluralWord: "Slip and Fall Lawyers",
+    selfLabel: "slip and fall lawyer"
+  },
+  {
+    id: "car-injury",
+    citySlugPrefix: "car-injury-lawyer",
+    stateSlugPrefix: "car-injury-lawyers",
+    cityH1Word: "Car Injury Lawyers",
+    pluralWord: "Car Injury Lawyers",
+    selfLabel: "car injury lawyer",
+    certified: false // per spec: "There are [x] Car Injury Lawyers in..." (no "Certified")
+  },
+  {
+    id: "truck-accident",
+    citySlugPrefix: "truck-accident-lawyer",
+    stateSlugPrefix: "truck-accident-lawyers",
+    cityH1Word: "Truck Accident Lawyers",
+    pluralWord: "Truck Accident Lawyers",
+    selfLabel: "truck accident lawyer",
+    certified: false // per spec: "There are [x] Truck Accident Lawyers in..." (no "Certified")
   }
 ];
+
+const lawyerVariant = VARIANTS.find((v) => v.id === "lawyer");
 
 function slugify(s) {
   return String(s)
@@ -67,6 +97,38 @@ function esc(s) {
 }
 
 const data = JSON.parse(readFileSync(join(ROOT, "data", "lawyers.json"), "utf8"));
+
+// ---------- Assign a stable, unique slug to every listing (for /partners/) ----------
+// Base slug is the business name; when two+ listings share a name (chains,
+// franchises), disambiguate with city-state, then an incrementing suffix.
+{
+  const byBaseSlug = new Map();
+  for (const l of data.listings) {
+    const base = slugify(l.name);
+    if (!byBaseSlug.has(base)) byBaseSlug.set(base, []);
+    byBaseSlug.get(base).push(l);
+  }
+  const usedSlugs = new Set();
+  for (const [base, group] of byBaseSlug) {
+    if (group.length === 1) {
+      const l = group[0];
+      let slug = base;
+      if (usedSlugs.has(slug)) slug = `${base}-${slugify(l.city || "")}-${(l.state || "").toLowerCase()}`;
+      while (usedSlugs.has(slug)) slug = `${slug}-2`;
+      usedSlugs.add(slug);
+      l.slug = slug;
+    } else {
+      for (const l of group) {
+        let slug = `${base}-${slugify(l.city || "")}-${(l.state || "").toLowerCase()}`;
+        let n = 2;
+        while (usedSlugs.has(slug)) slug = `${base}-${slugify(l.city || "")}-${(l.state || "").toLowerCase()}-${n++}`;
+        usedSlugs.add(slug);
+        l.slug = slug;
+      }
+    }
+  }
+  writeFileSync(join(ROOT, "data", "lawyers.json"), JSON.stringify(data));
+}
 
 // ---------- Group listings by city + state, and by state alone ----------
 const cityGroupsBase = new Map();
@@ -99,7 +161,7 @@ function listingsJsonFor(listings) {
     listings.map((l) => ({
       name: l.name, address: l.address, city: l.city, state: l.state,
       lat: l.lat, lng: l.lng, rating: l.rating, reviews: l.reviews,
-      type: l.type, quote: l.quote
+      type: l.type, quote: l.quote, slug: l.slug
     }))
   );
 }
@@ -112,18 +174,27 @@ function stateSlugFor(variant, g) {
 }
 
 // ---------- Shared page shell ----------
-function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, h1, listingsJson, contentHtml }) {
+function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, h1, listingsJson, contentHtml, featuredAlt }) {
   const breadcrumbJsonLd = breadcrumbItems
     ? `\n  <script type="application/ld+json">\n  {\n    "@context": "https://schema.org",\n    "@type": "BreadcrumbList",\n    "itemListElement": [\n${breadcrumbItems.map((it, i) => `      { "@type": "ListItem", "position": ${i + 1}, "name": "${esc(it.name)}", "item": "${it.item}" }`).join(",\n")}\n    ]\n  }\n  </script>`
     : "";
+  const featuredImageUrl = `${SITE}/assets/featured/search-map.svg`;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo/logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <link rel="canonical" href="${SITE}${url}">
+  <meta property="og:title" content="${esc(title)}">
+  <meta property="og:description" content="${esc(description)}">
+  <meta property="og:image" content="${featuredImageUrl}">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/vendor/leaflet.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${breadcrumbJsonLd}
@@ -131,7 +202,7 @@ function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, 
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="/">Personal Injury <span>Lawyer Hub</span></a>
+      <a class="brand" href="/"><img src="/assets/logo/logo.svg" alt="Personal Injury Lawyer Hub" class="brand-logo">Personal Injury <span>Lawyer Hub</span></a>
       <nav class="site-nav">
         <a href="/">Home</a>
         <a href="/blog/">Blog</a>
@@ -145,6 +216,7 @@ function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, 
   <section class="page-title">
     <div class="container">
       <p class="breadcrumb">${breadcrumbHtml}</p>
+      <img class="featured-image" src="/assets/featured/search-map.svg" width="800" height="300" alt="${esc(featuredAlt)}" loading="lazy">
       <h1>${h1}</h1>
       <p>${esc(description)}</p>
     </div>
@@ -202,12 +274,44 @@ ${contentHtml}
 
   <script src="/vendor/leaflet.js"></script>
   <script src="/js/citymap.js"></script>
+  <script src="/js/inquire.js"></script>
 </body>
 </html>
 `;
 }
 
-// ---------- Build all city pages (both variants) ----------
+function descriptionFor(variant, count, place) {
+  const word = variant.certified === false ? variant.pluralWord : `Certified ${variant.pluralWord}`;
+  return `There are ${count} ${word} in ${place}. Search verified listings, ratings, and reviews on our interactive map.`;
+}
+
+// Cross-links to every other variant's page for the same city/state, so no
+// variant's pages are orphaned for crawlers.
+function relatedSearchesHtml(variant, g, slugForFn) {
+  const others = VARIANTS.filter((v) => v !== variant);
+  const items = others
+    .map((v) => `<a href="/find/${slugForFn(v, g)}/">${esc(v.selfLabel)}</a>`)
+    .join(", ");
+  return `<p>Also searching for a different type of case? See the same firms listed as a ${items}.</p>`;
+}
+
+// Real, data-derived facts about this group of listings (not boilerplate) —
+// gives every city/state page unique, substantive content beyond a find/
+// replace of the place name, which matters at this page count for indexing.
+function statsHtml(g, place) {
+  const rated = g.listings.filter((l) => l.rating != null);
+  if (!rated.length) return "";
+  const avg = rated.reduce((s, l) => s + l.rating, 0) / rated.length;
+  const totalReviews = rated.reduce((s, l) => s + (l.reviews || 0), 0);
+  const top = rated.slice().sort((a, b) => (b.rating - a.rating) || ((b.reviews || 0) - (a.reviews || 0)))[0];
+  const fiveStarCount = rated.filter((l) => l.rating >= 4.8).length;
+  return `<p>Across ${rated.length} rated firms in ${esc(place)}, the average rating is ${avg.toFixed(1)} stars from a combined ${totalReviews.toLocaleString()} client reviews` +
+    (fiveStarCount ? `, and ${fiveStarCount} firm${fiveStarCount === 1 ? "" : "s"} hold${fiveStarCount === 1 ? "s" : ""} a 4.8-star rating or higher` : "") +
+    `. The top-rated listing is <strong>${esc(top.name)}</strong> at ${top.rating.toFixed(1)} stars` +
+    (top.reviews ? ` (${top.reviews.toLocaleString()} reviews)` : "") + ".</p>";
+}
+
+// ---------- Build all city pages (every variant) ----------
 const findDir = join(ROOT, "find");
 if (existsSync(findDir)) rmSync(findDir, { recursive: true, force: true });
 mkdirSync(findDir, { recursive: true });
@@ -216,12 +320,10 @@ let cityPageCount = 0;
 for (const g of cityGroups) {
   for (const variant of VARIANTS) {
     const slug = citySlugFor(variant, g);
-    const sibling = VARIANTS.find((v) => v !== variant);
-    const siblingSlug = citySlugFor(sibling, g);
     const stateSlug = stateSlugFor(variant, g);
 
     const title = `${variant.cityH1Word} in ${g.city}, ${g.stateName}`;
-    const description = `There are ${g.count} Certified ${variant.pluralWord} in ${g.city}, ${g.stateName}. Search verified listings, ratings, and reviews on our interactive map.`;
+    const description = descriptionFor(variant, g.count, `${g.city}, ${g.stateName}`);
     const url = `/find/${slug}/`;
     const breadcrumbHtml = `<a href="/find.html">Find</a> &rsaquo; <a href="/find/${stateSlug}/">${esc(g.stateName)}</a> &rsaquo; ${esc(g.city)}`;
     const breadcrumbItems = [
@@ -232,7 +334,9 @@ for (const g of cityGroups) {
     ];
     const contentHtml = `      <h2>${esc(variant.pluralWord)} Serving ${esc(g.city)}, ${esc(g.stateName)}</h2>
       <p>Comparing ${esc(variant.pluralWord.toLowerCase())} in ${esc(g.city)} starts with looking at overall rating, review volume, and what past clients say about their experience. Use the map above to see every listed firm's location, filter by business type or minimum rating, and sort by rating or number of reviews.</p>
-      <p>Looking for a ${esc(sibling.siblingLabel)} instead? <a href="/find/${siblingSlug}/">View the same firms in ${esc(g.city)}, ${esc(g.stateName)}</a>. Or browse every listing in <a href="/find/${stateSlug}/">${esc(g.stateName)}</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
+      ${statsHtml(g, `${g.city}, ${g.stateName}`)}
+      ${relatedSearchesHtml(variant, g, citySlugFor)}
+      <p>Browse every listing in <a href="/find/${stateSlug}/">${esc(g.stateName)}</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
 
     mkdirSync(join(findDir, slug), { recursive: true });
     writeFileSync(
@@ -241,7 +345,8 @@ for (const g of cityGroups) {
         title, description, url, breadcrumbHtml, breadcrumbItems,
         h1: `${variant.cityH1Word} in ${esc(g.city)}, ${esc(g.stateName)}`,
         listingsJson: listingsJsonFor(g.listings),
-        contentHtml
+        contentHtml,
+        featuredAlt: `${variant.pluralWord} search map for ${g.city}, ${g.stateName}`
       })
     );
     cityPageCount++;
@@ -249,16 +354,14 @@ for (const g of cityGroups) {
 }
 console.log(`Wrote ${cityPageCount} city searchmap pages to /find/ (${cityGroups.length} cities x ${VARIANTS.length} variants)`);
 
-// ---------- Build all state pages (both variants) ----------
+// ---------- Build all state pages (every variant) ----------
 let statePageCount = 0;
 for (const g of stateGroups) {
   for (const variant of VARIANTS) {
     const slug = stateSlugFor(variant, g);
-    const sibling = VARIANTS.find((v) => v !== variant);
-    const siblingSlug = stateSlugFor(sibling, g);
 
     const title = `${variant.cityH1Word} in ${g.stateName}`;
-    const description = `There are ${g.count} Certified ${variant.pluralWord} in ${g.stateName}. Search verified listings, ratings, and reviews on our interactive map.`;
+    const description = descriptionFor(variant, g.count, g.stateName);
     const url = `/find/${slug}/`;
     const breadcrumbHtml = `<a href="/find.html">Find</a> &rsaquo; ${esc(g.stateName)}`;
     const breadcrumbItems = [
@@ -268,7 +371,9 @@ for (const g of stateGroups) {
     ];
     const contentHtml = `      <h2>${esc(variant.pluralWord)} Serving ${esc(g.stateName)}</h2>
       <p>Comparing ${esc(variant.pluralWord.toLowerCase())} in ${esc(g.stateName)} starts with looking at overall rating, review volume, and what past clients say about their experience. Use the map above to see every listed firm's location, filter by business type or minimum rating, and sort by rating or number of reviews.</p>
-      <p>Looking for a ${esc(sibling.siblingLabel)} instead? <a href="/find/${siblingSlug}/">View the same firms in ${esc(g.stateName)}</a>. Or browse cities on our <a href="/find.html#${g.state}">Find page</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
+      ${statsHtml(g, g.stateName)}
+      ${relatedSearchesHtml(variant, g, stateSlugFor)}
+      <p>Browse cities on our <a href="/find.html#${g.state}">Find page</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
 
     mkdirSync(join(findDir, slug), { recursive: true });
     writeFileSync(
@@ -277,7 +382,8 @@ for (const g of stateGroups) {
         title, description, url, breadcrumbHtml, breadcrumbItems,
         h1: `${variant.cityH1Word} in ${esc(g.stateName)}`,
         listingsJson: listingsJsonFor(g.listings),
-        contentHtml
+        contentHtml,
+        featuredAlt: `${variant.pluralWord} search map for ${g.stateName}`
       })
     );
     statePageCount++;
@@ -285,8 +391,153 @@ for (const g of stateGroups) {
 }
 console.log(`Wrote ${statePageCount} state searchmap pages to /find/ (${stateGroups.length} states x ${VARIANTS.length} variants)`);
 
+// ---------- Build /partners/{slug}/ profile page for every listing ----------
+const CLAIM_URL = "https://buy.stripe.com/28E4gAfuG58I9UG9pIfrW04";
+
+function stars(rating) {
+  if (!rating) return "";
+  var full = Math.round(rating);
+  var out = "";
+  for (var i = 0; i < 5; i++) out += i < full ? "&#9733;" : "&#9734;";
+  return out;
+}
+
+function partnerPageHtml(l) {
+  const stateName = STATE_NAMES[l.state] || l.state;
+  const title = `${l.name} - ${l.city}, ${stateName}`;
+  const ratingSentence = l.rating
+    ? ` Rated ${l.rating.toFixed(1)} stars from ${l.reviews} client reviews.`
+    : "";
+  const description = `${l.name} is a personal injury law firm in ${l.city}, ${stateName}.${ratingSentence} View address, rating, and client reviews.`;
+  const url = `/partners/${l.slug}/`;
+  const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address || `${l.name} ${l.city} ${stateName}`)}`;
+  const citySlug = slugify(l.city || "");
+  const stateSlugLower = (l.state || "").toLowerCase();
+
+  const exploreLinks = VARIANTS.map((v) =>
+    `<li><a href="/find/${v.citySlugPrefix}-${citySlug}-${stateSlugLower}/">${esc(v.pluralWord)} in ${esc(l.city)}, ${esc(stateName)}</a></li>`
+  ).join("\n        ");
+  const stateLink = `<li><a href="/find/${lawyerVariant.stateSlugPrefix}-${stateSlugLower}/">${esc(lawyerVariant.pluralWord)} in ${esc(stateName)}</a></li>`;
+
+  const breadcrumbHtml = `<a href="/find.html">Find</a> &rsaquo; <a href="/partners.html">Partners</a> &rsaquo; ${esc(l.name)}`;
+  const breadcrumbItems = [
+    { name: "Home", item: `${SITE}/` },
+    { name: "Partners", item: `${SITE}/partners.html` },
+    { name: l.name, item: `${SITE}${url}` }
+  ];
+
+  const localBusinessJsonLd = `\n  <script type="application/ld+json">\n  {\n    "@context": "https://schema.org",\n    "@type": "Attorney",\n    "name": "${esc(l.name)}",\n    "address": "${esc(l.address)}"${l.rating ? `,\n    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "${l.rating}", "reviewCount": "${l.reviews}" }` : ""}\n  }\n  </script>`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo/logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(description)}">
+  <link rel="canonical" href="${SITE}${url}">
+  <meta property="og:title" content="${esc(title)}">
+  <meta property="og:description" content="${esc(description)}">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/vendor/leaflet.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${localBusinessJsonLd}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/"><img src="/assets/logo/logo.svg" alt="Personal Injury Lawyer Hub" class="brand-logo">Personal Injury <span>Lawyer Hub</span></a>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about.html">About</a>
+        <a href="/find.html">Find</a>
+        <a href="/partners.html" class="active">Partners</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-title">
+    <div class="container">
+      <p class="breadcrumb">${breadcrumbHtml}</p>
+      <h1>${esc(title)}</h1>
+      <p>${esc(l.type)} in ${esc(l.city)}, ${esc(stateName)}</p>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container">
+      <div class="profile-layout">
+        <div class="profile-card card">
+          <h2>${esc(l.name)}</h2>
+          <div class="type">${esc(l.type)}</div>
+          ${l.rating
+            ? `<div class="rating"><span class="stars">${stars(l.rating)}</span> ${l.rating.toFixed(1)} (${l.reviews} reviews)</div>`
+            : `<div class="rating">No rating yet</div>`}
+          <div class="addr">${esc(l.address)}</div>
+          ${l.quote ? `<blockquote>&ldquo;${esc(l.quote)}&rdquo;</blockquote>` : ""}
+          <p class="profile-actions">
+            <a class="btn btn-outline" href="${directionsUrl}" target="_blank" rel="noopener">Get Directions</a>
+            <button class="btn inquire-btn" type="button" data-name="${esc(l.name)}" data-slug="${esc(l.slug || "")}" data-city="${esc(l.city || "")}" data-state="${esc(stateName)}">Inquire</button>
+          </p>
+          <div class="claim-box">
+            <p>Are you the owner of ${esc(l.name)}?</p>
+            <a class="btn claim-btn" href="${CLAIM_URL}" target="_blank" rel="noopener">Claim This Business</a>
+          </div>
+        </div>
+        <div class="map-panel profile-map">
+          <div id="map" data-lat="${l.lat ?? ""}" data-lng="${l.lng ?? ""}" data-name="${esc(l.name)}"></div>
+        </div>
+      </div>
+
+      <h2>Explore Personal Injury Lawyers Near ${esc(l.city)}, ${esc(stateName)}</h2>
+      <ul>
+        ${exploreLinks}
+        ${stateLink}
+      </ul>
+      <p>Browse the full <a href="/partners.html">directory listing table</a> or return to the <a href="/">nationwide search map</a>.</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/disclaimer.html">Disclaimer</a></li>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/sitemap.html">Sitemap</a></li>
+      </ul>
+      <p class="footer-legal">Personal Injury Lawyer Hub is a directory service only. We are not a law firm and do not provide legal advice. Listing information is compiled from publicly available sources and does not constitute an endorsement or attorney referral. Copyright 2026 PersonalInjuryLawyerHub.com. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/vendor/leaflet.js"></script>
+  <script src="/js/partnermap.js"></script>
+  <script src="/js/inquire.js"></script>
+</body>
+</html>
+`;
+}
+
+const partnersDir = join(ROOT, "partners");
+if (existsSync(partnersDir)) rmSync(partnersDir, { recursive: true, force: true });
+mkdirSync(partnersDir, { recursive: true });
+for (const l of data.listings) {
+  if (!l.slug) continue;
+  const dir = join(partnersDir, l.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, "index.html"), partnerPageHtml(l));
+}
+console.log(`Wrote ${data.listings.length} partner profile pages to /partners/`);
+
 // ---------- Regenerate find.html (state -> city index, "lawyer" variant) ----------
-const lawyerVariant = VARIANTS.find((v) => v.id === "lawyer");
 const byState = new Map();
 for (const g of cityGroups) {
   if (!byState.has(g.state)) byState.set(g.state, { state: g.state, stateName: g.stateName, cities: [], count: 0 });
@@ -314,6 +565,10 @@ const findHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo/logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
   <title>Find a Personal Injury Lawyer by State | Personal Injury Lawyer Hub</title>
   <meta name="description" content="Browse personal injury lawyers and attorneys by state and city. Our directory covers all 50 states with ratings, reviews, and locations on an interactive map.">
   <link rel="canonical" href="${SITE}/find.html">
@@ -323,7 +578,7 @@ const findHtml = `<!DOCTYPE html>
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="/">Personal Injury <span>Lawyer Hub</span></a>
+      <a class="brand" href="/"><img src="/assets/logo/logo.svg" alt="Personal Injury Lawyer Hub" class="brand-logo">Personal Injury <span>Lawyer Hub</span></a>
       <nav class="site-nav">
         <a href="/">Home</a>
         <a href="/blog/">Blog</a>
@@ -397,7 +652,11 @@ for (const g of stateGroups) {
   }
 }
 
-const urlXml = [...staticUrls, ...stateUrls, ...cityUrls]
+const partnerUrls = data.listings
+  .filter((l) => l.slug)
+  .map((l) => ({ loc: `/partners/${l.slug}/`, freq: "monthly", pri: "0.5" }));
+
+const urlXml = [...staticUrls, ...stateUrls, ...cityUrls, ...partnerUrls]
   .map((u) => `  <url>
     <loc>${SITE}${u.loc}</loc>
     <lastmod>${TODAY}</lastmod>
@@ -412,7 +671,7 @@ ${urlXml}
 </urlset>
 `;
 writeFileSync(join(ROOT, "sitemap.xml"), sitemapXml);
-console.log(`Regenerated sitemap.xml with ${staticUrls.length + stateUrls.length + cityUrls.length} URLs`);
+console.log(`Regenerated sitemap.xml with ${staticUrls.length + stateUrls.length + cityUrls.length + partnerUrls.length} URLs`);
 
 // ---------- Redirect old ?state=XX homepage links to the "lawyer" state pages ----------
 // Old links like /?state=FL#directory pointed at the homepage filtered by

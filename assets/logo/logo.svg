@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" role="img" aria-label="Personal Injury Lawyer Hub">
+  <defs>
+    <linearGradient id="pinGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8e1f33"/>
+      <stop offset="100%" stop-color="#4c0d19"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Map pin -->
+  <path d="M100 8c-33 0-60 27-60 60 0 45 60 104 60 104s60-59 60-104c0-33-27-60-60-60z" fill="url(#pinGrad)"/>
+  <path d="M100 118c6 0 12-1 17-3-4 20-17 40-17 40s-13-20-17-40c5 2 11 3 17 3z" fill="#faf7f5" opacity="0.0"/>
+
+  <!-- White ring -->
+  <circle cx="100" cy="68" r="42" fill="none" stroke="#faf7f5" stroke-width="7"/>
+
+  <!-- Scales of justice -->
+  <g stroke="#faf7f5" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="100" y1="45" x2="100" y2="92"/>
+    <line x1="78" y1="92" x2="122" y2="92"/>
+    <line x1="72" y1="55" x2="128" y2="55"/>
+    <path d="M72 55 L60 78 a14 14 0 0 0 24 0 Z"/>
+    <path d="M128 55 L116 78 a14 14 0 0 0 24 0 Z"/>
+  </g>
+  <circle cx="100" cy="45" r="9" fill="#b8860b" stroke="none"/>
+  <path d="M100 40l1.6 3.3 3.6.5-2.6 2.6.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.6 3.6-.5z" fill="#faf7f5"/>
+
+  <!-- Wordmark -->
+  <text x="100" y="205" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="26" fill="#6e1423" font-weight="700">Personal Injury</text>
+  <text x="100" y="232" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="26" fill="#6e1423" font-weight="700">Lawyer Hub</text>
+</svg>

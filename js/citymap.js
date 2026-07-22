@@ -26,6 +26,16 @@
   var markerLayer = L.layerGroup();
   map.addLayer(markerLayer);
 
+  var burgundyIcon = L.icon({
+    iconUrl: "/vendor/images/marker-burgundy.png",
+    iconRetinaUrl: "/vendor/images/marker-burgundy-2x.png",
+    shadowUrl: "/vendor/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
   var withCoords = all.filter(function (l) { return l.lat != null && l.lng != null; });
   if (withCoords.length) {
     var bounds = L.latLngBounds(withCoords.map(function (l) { return [l.lat, l.lng]; }));
@@ -86,7 +96,7 @@
     markersById = {};
     filtered.forEach(function (l) {
       if (l.lat == null || l.lng == null) return;
-      var marker = L.marker([l.lat, l.lng]);
+      var marker = L.marker([l.lat, l.lng], { icon: burgundyIcon });
       var popup =
         "<strong>" + esc(l.name) + "</strong><br>" +
         esc(l.address) + "<br>" +
@@ -105,10 +115,12 @@
       return;
     }
 
-    cardsEl.innerHTML = filtered.map(function (l) {
+    cardsEl.innerHTML = filtered.map(function (l, i) {
       return (
         '<article class="card" data-id="' + l.id + '">' +
-        "<h3>" + esc(l.name) + "</h3>" +
+        '<span class="card-number">' + (i + 1) + "</span>" +
+        '<div class="card-body">' +
+        "<h3>" + (l.slug ? '<a href="/partners/' + l.slug + '/">' + esc(l.name) + '</a>' : esc(l.name)) + "</h3>" +
         '<div class="type">' + esc(l.type) + "</div>" +
         (l.rating
           ? '<div class="rating"><span class="stars">' + stars(l.rating) + "</span> " +
@@ -116,6 +128,8 @@
           : '<div class="rating">No rating yet</div>') +
         '<div class="addr">' + esc(l.address) + "</div>" +
         (l.quote ? "<blockquote>&ldquo;" + esc(l.quote) + "&rdquo;</blockquote>" : "") +
+        '<button class="btn btn-outline inquire-btn" type="button" data-name="' + esc(l.name) + '" data-slug="' + esc(l.slug || "") + '" data-city="' + esc(l.city || "") + '" data-state="' + esc(l.state || "") + '">Inquire</button>' +
+        "</div>" +
         "</article>"
       );
     }).join("");

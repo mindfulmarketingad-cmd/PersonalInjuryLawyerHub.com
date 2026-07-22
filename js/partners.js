@@ -100,7 +100,7 @@
     rowsEl.innerHTML = visible.map(function (l) {
       return (
         "<tr>" +
-        '<td class="name">' + esc(l.name) + "</td>" +
+        '<td class="name">' + (l.slug ? '<a href="/partners/' + l.slug + '/">' + esc(l.name) + '</a>' : esc(l.name)) + "</td>" +
         "<td>" + esc(l.type) + "</td>" +
         "<td>" + esc(l.city ? l.city + ", " : "") + esc(l.state) + "</td>" +
         "<td>" + (l.rating

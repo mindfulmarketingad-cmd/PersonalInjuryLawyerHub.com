@@ -48,7 +48,11 @@ a { color: var(--burgundy); }
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
 }
+.brand-logo { height: 38px; width: auto; display: block; }
 .brand span { color: #e8c9ce; font-weight: 400; }
 .site-nav a {
   color: var(--white);
@@ -194,9 +198,33 @@ a { color: var(--burgundy); }
   padding: 1rem 1.1rem;
   margin-bottom: 0.8rem;
   cursor: pointer;
+  display: flex;
+  gap: 0.7rem;
 }
 .card:hover { border-color: var(--burgundy); box-shadow: 0 2px 8px rgba(110, 20, 35, 0.12); }
+.card-number {
+  flex: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--burgundy);
+  color: var(--white);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-body { flex: 1; min-width: 0; }
+.inquire-btn {
+  margin-top: 0.6rem;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.9rem;
+}
 .card h3 { font-size: 1.05rem; color: var(--burgundy-dark); margin-bottom: 0.2rem; }
+.card h3 a { color: inherit; text-decoration: none; }
+.card h3 a:hover { text-decoration: underline; }
 .card .type {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.72rem;
@@ -269,7 +297,63 @@ a { color: var(--burgundy); }
 .form-grid textarea { min-height: 140px; }
 .form-note { font-size: 0.8rem; color: var(--gray); margin-top: 0.6rem; }
 
+/* Inquire lead-capture modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 26, 27, 0.6);
+  z-index: 1000;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+.modal-box {
+  background: var(--white);
+  border-top: 4px solid var(--burgundy);
+  border-radius: 4px;
+  max-width: 520px;
+  width: 100%;
+  padding: 1.75rem;
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.modal-box h2 { font-family: Georgia, serif; color: var(--burgundy-dark); font-size: 1.35rem; margin-bottom: 0.4rem; }
+.modal-sub { font-size: 0.9rem; color: var(--gray); margin-bottom: 1rem; }
+.modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.9rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--gray);
+}
+.modal-close:hover { color: var(--burgundy); }
+.modal-box label { display: block; font-size: 0.88rem; margin: 0.8rem 0 0.25rem; color: var(--ink); }
+.modal-box input, .modal-box select, .modal-box textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 0.92rem;
+  font-family: inherit;
+}
+.modal-box button[type="submit"] { margin-top: 1.1rem; width: 100%; }
+.modal-success { text-align: center; padding: 1rem 0; }
+.modal-success p { margin-bottom: 1rem; }
+
 /* Find city/state searchmap pages */
+.featured-image {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  border-radius: 4px;
+  margin: 0.6rem 0 1rem;
+}
 .breadcrumb {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.82rem;
@@ -307,6 +391,44 @@ a { color: var(--burgundy); }
 .city-list a { color: var(--ink); text-decoration: none; }
 .city-list a:hover { color: var(--burgundy); text-decoration: underline; }
 .city-list .count { color: var(--gray); font-size: 0.8rem; }
+
+/* Partner profile page (/partners/{slug}/) */
+.profile-layout {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 2rem;
+  align-items: stretch;
+}
+.profile-card {
+  flex: 1 1 340px;
+  cursor: default;
+}
+.profile-card:hover { box-shadow: none; }
+.profile-actions { margin-top: 1rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.claim-box {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--line);
+}
+.claim-box p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.88rem;
+  color: var(--gray);
+  margin-bottom: 0.5rem;
+}
+.claim-btn {
+  background: var(--gold);
+  color: var(--white);
+}
+.claim-btn:hover { background: #96690a; }
+.profile-map {
+  flex: 2 1 420px;
+  height: 420px;
+  min-height: 320px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
 
 /* Partners page: full listing directory */
 .listing-controls {
@@ -347,6 +469,8 @@ a { color: var(--burgundy); }
 }
 .listing-table tr:nth-child(even) td { background: var(--cream); }
 .listing-table td.name { color: var(--burgundy-dark); font-weight: 700; }
+.listing-table td.name a { color: inherit; text-decoration: none; }
+.listing-table td.name a:hover { text-decoration: underline; }
 .listing-table td .stars { color: var(--gold); letter-spacing: 0.08em; }
 .load-more-row { text-align: center; margin: 0.5rem 0 1.5rem; }
 .load-more-row .btn[disabled] { opacity: 0.5; cursor: default; }
