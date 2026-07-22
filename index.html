@@ -3,6 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="/js/state-redirects.js"></script>
+  <script>
+    // Redirect legacy /?state=XX links to the dedicated state searchmap page.
+    // Server-level 301s are configured in netlify.toml / vercel.json for
+    // hosts that support query-based redirects; this is the fallback for
+    // any other static host.
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var state = params.get("state");
+      var dest = state && window.STATE_REDIRECTS && window.STATE_REDIRECTS[state.toUpperCase()];
+      if (dest) window.location.replace(dest);
+    })();
+  </script>
   <title>Personal Injury Lawyer Directory | All 50 States</title>
   <meta name="description" content="Looking for a personal injury lawyer near me? Search our nationwide directory of personal injury lawyers and attorneys across all 50 states by zip code, state, and rating.">
   <link rel="canonical" href="https://personalinjurylawyerhub.com/">

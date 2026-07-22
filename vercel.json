@@ -1,0 +1,1228 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "AL"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-al/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "al"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-al/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "AK"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ak/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ak"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ak/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "AZ"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-az/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "az"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-az/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "AR"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ar/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ar"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ar/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "CA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ca/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ca"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ca/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "CO"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-co/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "co"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-co/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "CT"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ct/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ct"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ct/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "DE"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-de/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "de"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-de/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "DC"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-dc/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "dc"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-dc/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "FL"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-fl/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "fl"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-fl/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "GA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ga/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ga"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ga/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "HI"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-hi/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "hi"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-hi/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ID"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-id/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "id"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-id/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "IL"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-il/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "il"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-il/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "IN"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-in/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "in"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-in/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "IA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ia/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ia"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ia/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "KS"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ks/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ks"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ks/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "KY"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ky/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ky"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ky/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "LA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-la/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "la"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-la/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ME"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-me/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "me"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-me/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "MD"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-md/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "md"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-md/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "MA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ma/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ma"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ma/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "MI"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mi/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "mi"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mi/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "MN"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mn/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "mn"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mn/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "MS"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ms/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ms"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ms/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "MO"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mo/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "mo"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mo/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "MT"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mt/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "mt"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-mt/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "NE"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ne/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ne"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ne/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "NV"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nv/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "nv"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nv/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "NH"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nh/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "nh"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nh/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "NJ"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nj/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "nj"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nj/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "NM"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nm/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "nm"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nm/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "NY"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ny/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ny"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ny/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "NC"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nc/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "nc"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nc/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ND"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nd/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "nd"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-nd/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "OH"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-oh/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "oh"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-oh/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "OK"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ok/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ok"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ok/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "OR"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-or/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "or"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-or/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "PA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-pa/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "pa"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-pa/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "RI"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ri/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ri"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ri/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "SC"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-sc/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "sc"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-sc/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "SD"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-sd/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "sd"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-sd/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "TN"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-tn/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "tn"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-tn/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "TX"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-tx/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "tx"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-tx/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "UT"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ut/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "ut"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-ut/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "VT"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-vt/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "vt"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-vt/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "VA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-va/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "va"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-va/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "WA"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wa/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "wa"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wa/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "WV"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wv/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "wv"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wv/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "WI"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wi/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "wi"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wi/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "WY"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wy/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "state",
+          "value": "wy"
+        }
+      ],
+      "destination": "/find/personal-injury-lawyers-wy/",
+      "permanent": true
+    }
+  ]
+}
