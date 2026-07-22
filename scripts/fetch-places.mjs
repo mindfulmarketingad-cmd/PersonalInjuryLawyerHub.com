@@ -39,6 +39,9 @@ const STATES = {
 const QUERIES = ["Personal Injury Lawyer", "Personal Injury Attorney"];
 
 // Only the fields the directory needs. Photos are deliberately excluded.
+// rating/userRatingCount/reviews already put this call in the Places API's
+// Enterprise field tier, so websiteUri and regularOpeningHours below add no
+// additional per-request cost on top of that.
 const FIELD_MASK = [
   "places.displayName",
   "places.formattedAddress",
@@ -47,6 +50,8 @@ const FIELD_MASK = [
   "places.userRatingCount",
   "places.primaryTypeDisplayName",
   "places.reviews",
+  "places.websiteUri",
+  "places.regularOpeningHours",
 ].join(",");
 
 async function searchText(textQuery) {
@@ -117,6 +122,8 @@ for (const [abbr, stateName] of Object.entries(STATES)) {
           reviews: p.userRatingCount ?? 0,
           type: p.primaryTypeDisplayName?.text ?? "Personal Injury Attorney",
           quote: pickReview(p.reviews),
+          website: p.websiteUri ?? "",
+          hours: p.regularOpeningHours?.weekdayDescriptions ?? null,
         });
       }
       console.log(`${textQuery}: ${places.length} results (${listings.length} total)`);

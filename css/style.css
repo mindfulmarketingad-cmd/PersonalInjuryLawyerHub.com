@@ -255,6 +255,18 @@ a { color: var(--burgundy); }
 }
 .no-results { padding: 1.5rem; color: var(--gray); font-family: Arial, sans-serif; }
 
+/* Full-width card grid (Partners directory page) */
+.card-grid {
+  flex: none;
+  overflow: visible;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+.card-grid .card { margin-bottom: 0; }
+
 /* Map popup */
 .leaflet-popup-content { font-family: Arial, Helvetica, sans-serif; font-size: 0.85rem; }
 .leaflet-popup-content strong { color: var(--burgundy-dark); }
@@ -401,10 +413,32 @@ a { color: var(--burgundy); }
   align-items: stretch;
 }
 .profile-card {
+  display: block;
   flex: 1 1 340px;
   cursor: default;
 }
 .profile-card:hover { box-shadow: none; }
+.profile-card .website {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.88rem;
+  margin-top: 0.3rem;
+}
+.profile-card .hours {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+}
+.profile-card .hours h3 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray);
+  margin-bottom: 0.4rem;
+}
+.profile-card .hours ul { list-style: none; padding: 0; margin: 0; }
+.profile-card .hours li { padding: 0.15rem 0; color: var(--ink); }
 .profile-actions { margin-top: 1rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
 .claim-box {
   margin-top: 1.2rem;

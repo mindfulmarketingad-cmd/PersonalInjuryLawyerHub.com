@@ -97,10 +97,13 @@
     filtered.forEach(function (l) {
       if (l.lat == null || l.lng == null) return;
       var marker = L.marker([l.lat, l.lng], { icon: burgundyIcon });
+      var directionsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(l.address || l.name);
       var popup =
         "<strong>" + esc(l.name) + "</strong><br>" +
         esc(l.address) + "<br>" +
-        (l.rating ? l.rating.toFixed(1) + " stars (" + l.reviews + " reviews)" : "No rating yet");
+        (l.rating ? l.rating.toFixed(1) + " stars (" + l.reviews + " reviews)<br>" : "No rating yet<br>") +
+        (l.website ? '<a href="' + esc(l.website) + '" target="_blank" rel="noopener nofollow">Website</a> &middot; ' : "") +
+        '<a href="' + directionsUrl + '" target="_blank" rel="noopener">Directions</a>';
       marker.bindPopup(popup);
       markersById[l.id] = marker;
       markerLayer.addLayer(marker);

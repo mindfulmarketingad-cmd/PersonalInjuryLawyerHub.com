@@ -77,6 +77,15 @@ const VARIANTS = [
     pluralWord: "Truck Accident Lawyers",
     selfLabel: "truck accident lawyer",
     certified: false // per spec: "There are [x] Truck Accident Lawyers in..." (no "Certified")
+  },
+  {
+    id: "wrongful-death",
+    citySlugPrefix: "wrongful-death-lawyer",
+    stateSlugPrefix: "wrongful-death-lawyers",
+    cityH1Word: "Wrongful Death Lawyers",
+    pluralWord: "Wrongful Death Lawyers",
+    selfLabel: "wrongful death lawyer",
+    certified: false // per spec: "There are [x] Wrongful Death Lawyers in..." (no "Certified")
   }
 ];
 
@@ -161,7 +170,7 @@ function listingsJsonFor(listings) {
     listings.map((l) => ({
       name: l.name, address: l.address, city: l.city, state: l.state,
       lat: l.lat, lng: l.lng, rating: l.rating, reviews: l.reviews,
-      type: l.type, quote: l.quote, slug: l.slug
+      type: l.type, quote: l.quote, slug: l.slug, website: l.website, hours: l.hours
     }))
   );
 }
@@ -410,7 +419,8 @@ function partnerPageHtml(l) {
     : "";
   const description = `${l.name} is a personal injury law firm in ${l.city}, ${stateName}.${ratingSentence} View address, rating, and client reviews.`;
   const url = `/partners/${l.slug}/`;
-  const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address || `${l.name} ${l.city} ${stateName}`)}`;
+  // Omitting "origin" makes Google Maps default to the visitor's current location.
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(l.address || `${l.name} ${l.city} ${stateName}`)}`;
   const citySlug = slugify(l.city || "");
   const stateSlugLower = (l.state || "").toLowerCase();
 
@@ -479,7 +489,9 @@ function partnerPageHtml(l) {
             ? `<div class="rating"><span class="stars">${stars(l.rating)}</span> ${l.rating.toFixed(1)} (${l.reviews} reviews)</div>`
             : `<div class="rating">No rating yet</div>`}
           <div class="addr">${esc(l.address)}</div>
+          ${l.website ? `<div class="website"><a href="${esc(l.website)}" target="_blank" rel="noopener nofollow">Visit Website</a></div>` : ""}
           ${l.quote ? `<blockquote>&ldquo;${esc(l.quote)}&rdquo;</blockquote>` : ""}
+          ${l.hours && l.hours.length ? `<div class="hours"><h3>Business Hours</h3><ul>${l.hours.map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div>` : ""}
           <p class="profile-actions">
             <a class="btn btn-outline" href="${directionsUrl}" target="_blank" rel="noopener">Get Directions</a>
             <button class="btn inquire-btn" type="button" data-name="${esc(l.name)}" data-slug="${esc(l.slug || "")}" data-city="${esc(l.city || "")}" data-state="${esc(stateName)}">Inquire</button>
