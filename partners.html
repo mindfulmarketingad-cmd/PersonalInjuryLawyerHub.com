@@ -51,6 +51,53 @@
 
       <h2>Get Started</h2>
       <p>To discuss a partnership, contact us at <a href="mailto:contact@personalinjurylawyerhub.com">contact@personalinjurylawyerhub.com</a> or through the <a href="/contact.html">Contact page</a> and select "Partnership Inquiry."</p>
+
+      <h2>All Business Listings</h2>
+      <p>Browse every firm currently in our directory. Search by name or city, filter by state, type, and rating, and sort the results below.</p>
+    </div>
+
+    <div class="container">
+      <div class="controls listing-controls">
+        <div class="zip-row">
+          <input type="text" id="pl-search" placeholder="Search by firm name or city" aria-label="Search listings">
+        </div>
+        <select id="pl-state" aria-label="Filter by state">
+          <option value="">All States</option>
+        </select>
+        <select id="pl-type" aria-label="Filter by business type">
+          <option value="">All Types</option>
+        </select>
+        <select id="pl-rating" aria-label="Filter by minimum rating">
+          <option value="">Any Rating</option>
+          <option value="4.5">4.5 stars and up</option>
+          <option value="4">4 stars and up</option>
+          <option value="3">3 stars and up</option>
+        </select>
+        <select id="pl-sort" aria-label="Sort listings">
+          <option value="rating">Sort: Highest Rated</option>
+          <option value="reviews">Sort: Most Reviews</option>
+          <option value="name">Sort: Name A-Z</option>
+          <option value="state">Sort: State A-Z</option>
+        </select>
+      </div>
+      <div class="results-meta" id="pl-meta">Loading listings...</div>
+      <div class="listing-table-wrap">
+        <table class="listing-table">
+          <thead>
+            <tr>
+              <th>Firm Name</th>
+              <th>Type</th>
+              <th>City / State</th>
+              <th>Rating</th>
+              <th>Address</th>
+            </tr>
+          </thead>
+          <tbody id="pl-rows"></tbody>
+        </table>
+      </div>
+      <div class="load-more-row">
+        <button class="btn btn-outline" id="pl-load-more" type="button">Load More Listings</button>
+      </div>
     </div>
   </main>
 
@@ -68,5 +115,7 @@
       <p class="footer-legal">Personal Injury Lawyer Hub is a directory service only. We are not a law firm and do not provide legal advice. Listing information is compiled from publicly available sources and does not constitute an endorsement or attorney referral. Copyright 2026 PersonalInjuryLawyerHub.com. All rights reserved.</p>
     </div>
   </footer>
+
+  <script src="/js/partners.js"></script>
 </body>
 </html>

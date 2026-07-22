@@ -269,6 +269,49 @@ a { color: var(--burgundy); }
 .form-grid textarea { min-height: 140px; }
 .form-note { font-size: 0.8rem; color: var(--gray); margin-top: 0.6rem; }
 
+/* Partners page: full listing directory */
+.listing-controls {
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  margin-top: 0.5rem;
+}
+.listing-controls .zip-row { grid-column: 1 / -1; }
+.listing-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-top: none;
+  margin-bottom: 1rem;
+}
+.listing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  min-width: 700px;
+}
+.listing-table th {
+  text-align: left;
+  background: var(--burgundy);
+  color: var(--white);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  position: sticky;
+  top: 0;
+}
+.listing-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.listing-table tr:nth-child(even) td { background: var(--cream); }
+.listing-table td.name { color: var(--burgundy-dark); font-weight: 700; }
+.listing-table td .stars { color: var(--gold); letter-spacing: 0.08em; }
+.load-more-row { text-align: center; margin: 0.5rem 0 1.5rem; }
+.load-more-row .btn[disabled] { opacity: 0.5; cursor: default; }
+
 /* Footer */
 .site-footer {
   background: var(--burgundy-dark);
