@@ -273,6 +273,13 @@ a { color: var(--burgundy); }
 
 /* Intro section under map */
 .home-intro { background: var(--white); }
+.faq { background: var(--cream); border-top: 1px solid var(--line); }
+.faq h3 {
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.faq h3:first-of-type { border-top: none; margin-top: 0.6rem; padding-top: 0; }
 
 /* State grid (Find page) */
 .state-grid {
