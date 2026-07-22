@@ -126,8 +126,6 @@ function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, 
   <link rel="canonical" href="${SITE}${url}">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/vendor/leaflet.css">
-  <link rel="stylesheet" href="/vendor/MarkerCluster.css">
-  <link rel="stylesheet" href="/vendor/MarkerCluster.Default.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${breadcrumbJsonLd}
 </head>
 <body>
@@ -203,7 +201,6 @@ ${contentHtml}
   </footer>
 
   <script src="/vendor/leaflet.js"></script>
-  <script src="/vendor/leaflet.markercluster.js"></script>
   <script src="/js/citymap.js"></script>
 </body>
 </html>

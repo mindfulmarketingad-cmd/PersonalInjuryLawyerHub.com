@@ -23,8 +23,8 @@
     }
   );
 
-  var cluster = L.markerClusterGroup({ chunkedLoading: true, showCoverageOnHover: false });
-  map.addLayer(cluster);
+  var markerLayer = L.layerGroup();
+  map.addLayer(markerLayer);
 
   var withCoords = all.filter(function (l) { return l.lat != null && l.lng != null; });
   if (withCoords.length) {
@@ -82,7 +82,7 @@
   }
 
   function renderMarkers() {
-    cluster.clearLayers();
+    markerLayer.clearLayers();
     markersById = {};
     filtered.forEach(function (l) {
       if (l.lat == null || l.lng == null) return;
@@ -93,7 +93,7 @@
         (l.rating ? l.rating.toFixed(1) + " stars (" + l.reviews + " reviews)" : "No rating yet");
       marker.bindPopup(popup);
       markersById[l.id] = marker;
-      cluster.addLayer(marker);
+      markerLayer.addLayer(marker);
     });
   }
 
