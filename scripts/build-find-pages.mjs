@@ -562,9 +562,9 @@ const statesForIndex = [...byState.values()].sort((a, b) => a.stateName.localeCo
 const stateSections = statesForIndex.map((s) => {
   const cityLinks = s.cities
     .sort((a, b) => a.city.localeCompare(b.city))
-    .map((g) => `        <li><a href="/find/${citySlugFor(lawyerVariant, g)}/">${esc(g.city)}, ${esc(s.state)}</a> <span class="count">(${g.count})</span></li>`)
+    .map((g) => `        <li data-city="${esc(g.city + ", " + s.state)}"><a href="/find/${citySlugFor(lawyerVariant, g)}/">${esc(g.city)}, ${esc(s.state)}</a> <span class="count">(${g.count})</span></li>`)
     .join("\n");
-  return `      <div class="state-block" id="${s.state}">
+  return `      <div class="state-block" id="${s.state}" data-state-name="${esc(s.stateName)}" data-count="${s.count}">
         <h3><a href="/find/${lawyerVariant.stateSlugPrefix}-${s.state.toLowerCase()}/">${esc(s.stateName)}</a> <span class="count">(${s.count} listings)</span></h3>
         <ul class="city-list">
 ${cityLinks}
@@ -613,7 +613,25 @@ const findHtml = `<!DOCTYPE html>
       <p>Our directory includes ${data.count} personal injury law firm listings across all 50 states and the District of Columbia. Choose a state below, then a city, to open a dedicated map and listing page for that area. Prefer to search by "attorney" instead of "lawyer"? Every city and state page links to its attorney-focused equivalent. Or use the zip code search on the <a href="/#directory">homepage directory</a> for results closest to you.</p>
 
       <h2>Browse by State and City</h2>
+      <div class="controls find-controls">
+        <div class="zip-row">
+          <input type="text" id="find-search" placeholder="Search by city or state" aria-label="Search by city or state">
+        </div>
+        <select id="find-sort" aria-label="Sort states">
+          <option value="name">Sort: State A-Z</option>
+          <option value="count">Sort: Most Listings</option>
+        </select>
+        <select id="find-filter" aria-label="Filter by state size">
+          <option value="0">All States</option>
+          <option value="20">20+ Listings</option>
+          <option value="25">25+ Listings</option>
+          <option value="30">30+ Listings</option>
+        </select>
+      </div>
+      <p class="results-meta" id="find-meta"></p>
+      <div id="state-list">
 ${stateSections}
+      </div>
     </div>
   </main>
 
@@ -631,6 +649,7 @@ ${stateSections}
       <p class="footer-legal">Personal Injury Lawyer Hub is a directory service only. We are not a law firm and do not provide legal advice. Listing information is compiled from publicly available sources and does not constitute an endorsement or attorney referral. Copyright 2026 PersonalInjuryLawyerHub.com. All rights reserved.</p>
     </div>
   </footer>
+  <script src="/js/findindex.js"></script>
 </body>
 </html>
 `;

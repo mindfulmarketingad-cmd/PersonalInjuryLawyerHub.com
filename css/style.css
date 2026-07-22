@@ -472,6 +472,15 @@ a { color: var(--burgundy); }
   margin-top: 0.5rem;
 }
 .listing-controls .zip-row { grid-column: 1 / -1; }
+
+.find-controls {
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  margin: 0.5rem 0 0;
+  max-width: 700px;
+}
+.find-controls .zip-row { grid-column: 1 / -1; }
 .listing-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
