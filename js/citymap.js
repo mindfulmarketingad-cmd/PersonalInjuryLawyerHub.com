@@ -148,6 +148,21 @@
     }
   });
 
+  var hoveredMarker = null;
+  function setHoveredMarker(marker) {
+    if (hoveredMarker === marker) return;
+    if (hoveredMarker && hoveredMarker._icon) hoveredMarker._icon.classList.remove("marker-hover");
+    hoveredMarker = marker;
+    if (hoveredMarker && hoveredMarker._icon) hoveredMarker._icon.classList.add("marker-hover");
+  }
+  cardsEl.addEventListener("mouseover", function (e) {
+    var card = e.target.closest(".card");
+    setHoveredMarker(card ? markersById[card.getAttribute("data-id")] : null);
+  });
+  cardsEl.addEventListener("mouseleave", function () {
+    setHoveredMarker(null);
+  });
+
   var typeCounts = {};
   all.forEach(function (l) { if (l.type) typeCounts[l.type] = (typeCounts[l.type] || 0) + 1; });
   Object.keys(typeCounts).sort(function (a, b) { return typeCounts[b] - typeCounts[a]; })

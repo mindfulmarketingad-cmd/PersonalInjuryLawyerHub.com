@@ -213,6 +213,21 @@
     }
   });
 
+  var hoveredMarker = null;
+  function setHoveredMarker(marker) {
+    if (hoveredMarker === marker) return;
+    if (hoveredMarker && hoveredMarker._icon) hoveredMarker._icon.classList.remove("marker-hover");
+    hoveredMarker = marker;
+    if (hoveredMarker && hoveredMarker._icon) hoveredMarker._icon.classList.add("marker-hover");
+  }
+  cardsEl.addEventListener("mouseover", function (e) {
+    var card = e.target.closest(".card");
+    setHoveredMarker(card ? markersById[card.getAttribute("data-id")] : null);
+  });
+  cardsEl.addEventListener("mouseleave", function () {
+    setHoveredMarker(null);
+  });
+
   // Zip code search via the free Zippopotam.us API (no key required).
   function searchZip() {
     var zip = zipInput.value.trim();

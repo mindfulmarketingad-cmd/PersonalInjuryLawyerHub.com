@@ -271,6 +271,15 @@ a { color: var(--burgundy); }
 .leaflet-popup-content { font-family: Arial, Helvetica, sans-serif; font-size: 0.85rem; }
 .leaflet-popup-content strong { color: var(--burgundy-dark); }
 
+/* Marker reacts when its listing card is hovered */
+.leaflet-marker-icon {
+  transition: filter 0.15s ease;
+}
+.marker-hover {
+  filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 8px #b8860b) brightness(1.15);
+  z-index: 10000 !important;
+}
+
 /* Intro section under map */
 .home-intro { background: var(--white); }
 .faq { background: var(--cream); border-top: 1px solid var(--line); }
@@ -401,15 +410,22 @@ a { color: var(--burgundy); }
   list-style: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0.35rem 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.5rem 1.5rem;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.92rem;
 }
-.city-list li { padding: 0.15rem 0; }
-.city-list a { color: var(--ink); text-decoration: none; }
-.city-list a:hover { color: var(--burgundy); text-decoration: underline; }
-.city-list .count { color: var(--gray); font-size: 0.8rem; }
+.city-list li { padding: 0.3rem 0; border-bottom: 1px solid var(--line); }
+.city-list .city-name { color: var(--ink); font-weight: 700; display: block; }
+.city-list .count { color: var(--gray); font-size: 0.8rem; font-weight: normal; }
+.variant-links {
+  display: block;
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
+}
+.variant-links a { color: var(--burgundy); text-decoration: none; }
+.variant-links a:hover { text-decoration: underline; }
+.state-variant-links { font-size: 0.85rem; margin: 0 0 0.6rem; }
 
 /* Partner profile page (/partners/{slug}/) */
 .profile-layout {
@@ -518,6 +534,7 @@ a { color: var(--burgundy); }
   vertical-align: top;
 }
 .listing-table tr:nth-child(even) td { background: var(--cream); }
+.listing-table td.rank { color: var(--gray); text-align: center; width: 2.5rem; }
 .listing-table td.name { color: var(--burgundy-dark); font-weight: 700; }
 .listing-table td.name a { color: inherit; text-decoration: none; }
 .listing-table td.name a:hover { text-decoration: underline; }

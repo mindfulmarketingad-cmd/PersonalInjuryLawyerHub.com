@@ -85,7 +85,21 @@
         </select>
       </div>
       <div class="results-meta" id="pl-meta">Loading listings...</div>
-      <div class="cards card-grid" id="pl-rows"></div>
+      <div class="listing-table-wrap">
+        <table class="listing-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Firm Name</th>
+              <th>Rating</th>
+              <th>Practice Type</th>
+              <th>Location</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="pl-rows"></tbody>
+        </table>
+      </div>
       <div class="load-more-row">
         <button class="btn btn-outline" id="pl-load-more" type="button">Load More Listings</button>
       </div>

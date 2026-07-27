@@ -42,7 +42,8 @@ const VARIANTS = [
     stateSlugPrefix: "personal-injury-lawyers",
     cityH1Word: "Personal Injury Lawyer",
     pluralWord: "Personal Injury Lawyers",
-    selfLabel: "personal injury lawyer"
+    selfLabel: "personal injury lawyer",
+    shortLabel: "Lawyer"
   },
   {
     id: "attorney",
@@ -50,7 +51,8 @@ const VARIANTS = [
     stateSlugPrefix: "personal-injury-attorneys",
     cityH1Word: "Personal Injury Attorneys",
     pluralWord: "Personal Injury Attorneys",
-    selfLabel: "personal injury attorney"
+    selfLabel: "personal injury attorney",
+    shortLabel: "Attorney"
   },
   {
     id: "slip-fall",
@@ -58,7 +60,8 @@ const VARIANTS = [
     stateSlugPrefix: "slip-fall-lawyers",
     cityH1Word: "Slip and Fall Lawyers",
     pluralWord: "Slip and Fall Lawyers",
-    selfLabel: "slip and fall lawyer"
+    selfLabel: "slip and fall lawyer",
+    shortLabel: "Slip & Fall"
   },
   {
     id: "car-injury",
@@ -67,6 +70,7 @@ const VARIANTS = [
     cityH1Word: "Car Injury Lawyers",
     pluralWord: "Car Injury Lawyers",
     selfLabel: "car injury lawyer",
+    shortLabel: "Car Injury",
     certified: false // per spec: "There are [x] Car Injury Lawyers in..." (no "Certified")
   },
   {
@@ -76,6 +80,7 @@ const VARIANTS = [
     cityH1Word: "Truck Accident Lawyers",
     pluralWord: "Truck Accident Lawyers",
     selfLabel: "truck accident lawyer",
+    shortLabel: "Truck Accident",
     certified: false // per spec: "There are [x] Truck Accident Lawyers in..." (no "Certified")
   },
   {
@@ -85,6 +90,7 @@ const VARIANTS = [
     cityH1Word: "Wrongful Death Lawyers",
     pluralWord: "Wrongful Death Lawyers",
     selfLabel: "wrongful death lawyer",
+    shortLabel: "Wrongful Death",
     certified: false // per spec: "There are [x] Wrongful Death Lawyers in..." (no "Certified")
   }
 ];
@@ -559,13 +565,21 @@ for (const g of cityGroups) {
 }
 const statesForIndex = [...byState.values()].sort((a, b) => a.stateName.localeCompare(b.stateName));
 
+function variantLinksHtml(slugForFn, g) {
+  return VARIANTS.map((v) => `<a href="/find/${slugForFn(v, g)}/">${esc(v.shortLabel)}</a>`).join(" &middot; ");
+}
+
 const stateSections = statesForIndex.map((s) => {
   const cityLinks = s.cities
     .sort((a, b) => a.city.localeCompare(b.city))
-    .map((g) => `        <li data-city="${esc(g.city + ", " + s.state)}"><a href="/find/${citySlugFor(lawyerVariant, g)}/">${esc(g.city)}, ${esc(s.state)}</a> <span class="count">(${g.count})</span></li>`)
+    .map((g) => `        <li data-city="${esc(g.city + ", " + s.state)}">
+          <span class="city-name">${esc(g.city)}, ${esc(s.state)} <span class="count">(${g.count})</span></span>
+          <span class="variant-links">${variantLinksHtml(citySlugFor, g)}</span>
+        </li>`)
     .join("\n");
   return `      <div class="state-block" id="${s.state}" data-state-name="${esc(s.stateName)}" data-count="${s.count}">
-        <h3><a href="/find/${lawyerVariant.stateSlugPrefix}-${s.state.toLowerCase()}/">${esc(s.stateName)}</a> <span class="count">(${s.count} listings)</span></h3>
+        <h3>${esc(s.stateName)} <span class="count">(${s.count} listings)</span></h3>
+        <p class="variant-links state-variant-links">${variantLinksHtml(stateSlugFor, s)}</p>
         <ul class="city-list">
 ${cityLinks}
         </ul>

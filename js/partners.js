@@ -92,27 +92,23 @@
       (filtered.length ? " — showing " + visible.length : "");
 
     if (!visible.length) {
-      rowsEl.innerHTML = '<p class="no-results">No listings match your search. Try different filters.</p>';
+      rowsEl.innerHTML = '<tr><td colspan="6" class="no-results">No listings match your search. Try different filters.</td></tr>';
       loadMoreBtn.style.display = "none";
       return;
     }
 
     rowsEl.innerHTML = visible.map(function (l, i) {
       return (
-        '<article class="card">' +
-        '<span class="card-number">' + (i + 1) + "</span>" +
-        '<div class="card-body">' +
-        "<h3>" + (l.slug ? '<a href="/partners/' + l.slug + '/">' + esc(l.name) + '</a>' : esc(l.name)) + "</h3>" +
-        '<div class="type">' + esc(l.type) + " &middot; " + esc(l.city ? l.city + ", " : "") + esc(l.state) + "</div>" +
-        (l.rating
-          ? '<div class="rating"><span class="stars">' + stars(l.rating) + "</span> " +
-            l.rating.toFixed(1) + " (" + l.reviews + " reviews)</div>"
-          : '<div class="rating">No rating yet</div>') +
-        '<div class="addr">' + esc(l.address) + "</div>" +
-        (l.quote ? "<blockquote>&ldquo;" + esc(l.quote) + "&rdquo;</blockquote>" : "") +
-        '<button class="btn btn-outline inquire-btn" type="button" data-name="' + esc(l.name) + '" data-slug="' + esc(l.slug || "") + '" data-city="' + esc(l.city || "") + '" data-state="' + esc(l.state || "") + '">Inquire</button>' +
-        "</div>" +
-        "</article>"
+        "<tr>" +
+        '<td class="rank">' + (i + 1) + "</td>" +
+        '<td class="name">' + (l.slug ? '<a href="/partners/' + l.slug + '/">' + esc(l.name) + '</a>' : esc(l.name)) + "</td>" +
+        "<td>" + (l.rating
+          ? '<span class="stars">' + stars(l.rating) + "</span> " + l.rating.toFixed(1) + " (" + l.reviews + ")"
+          : "No rating") + "</td>" +
+        "<td>" + esc(l.type) + "</td>" +
+        "<td>" + esc(l.city ? l.city + ", " : "") + esc(l.state) + "</td>" +
+        '<td><button class="btn btn-outline inquire-btn" type="button" data-name="' + esc(l.name) + '" data-slug="' + esc(l.slug || "") + '" data-city="' + esc(l.city || "") + '" data-state="' + esc(l.state || "") + '">Inquire</button></td>' +
+        "</tr>"
       );
     }).join("");
 
