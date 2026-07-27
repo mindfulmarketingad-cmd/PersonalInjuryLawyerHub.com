@@ -1,24 +1,52 @@
 // Shared "Inquire" lead-capture modal. Injected once per page, opened by
 // any element with class "inquire-btn" (cards site-wide, partner profile
-// pages). Submits to Supabase — see SUPABASE_URL / SUPABASE_ANON_KEY below.
+// pages). Submits leads to Supabase via the REST API.
 //
-// NOTE: SUPABASE_ANON_KEY is a placeholder. Leads will not be persisted
-// until the real anon/public API key (and the target table name/columns)
-// are filled in here.
+// The publishable key below is intended to be public — it is the browser-side
+// key and carries no privileges of its own. Access is controlled entirely by
+// Row Level Security on the target table, so the leads table must have an RLS
+// policy permitting INSERT for the anon role. If inserts are rejected with a
+// 401 or 403, that policy is the thing to check.
+//
+// FIELD_MAP is the single place to adjust column names. Keys are this site's
+// internal field names; values are the actual column names in your table.
+// If a column does not exist in your schema, set its value to null and it
+// will be omitted from the insert.
 
 (function () {
   "use strict";
 
   var SUPABASE_URL = "https://tbqigevoksabizjogvtm.supabase.co";
-  var SUPABASE_ANON_KEY = ""; // TODO: set anon/public API key
-  var SUPABASE_TABLE = "leads"; // TODO: confirm table name/columns
+  var SUPABASE_ANON_KEY = "sb_publishable_aHlx0Tdu2rhOTBUp3lhkQw_Lv6Awz7a";
+  var SUPABASE_TABLE = "leads";
+
+  var FIELD_MAP = {
+    name: "name",
+    email: "email",
+    phone: "phone",
+    zip: "zip",
+    incident_type: "incident_type",
+    incident_timing: "incident_timing",
+    sought_treatment: "sought_treatment",
+    spoke_to_attorney: "spoke_to_attorney",
+    details: "details",
+    business_name: "business_name",
+    business_slug: "business_slug",
+    business_city: "business_city",
+    business_state: "business_state",
+    source_site: "source_site",
+    source_url: "source_url"
+    // created_at intentionally omitted — let the database default set it.
+  };
+
+  var FALLBACK_EMAIL = "contact@personalinjurylawyerhub.com";
 
   var INCIDENT_TYPES = [
     "Car Accident", "Truck Accident", "Motorcycle Accident", "Slip and Fall",
     "Workplace Injury", "Medical Malpractice", "Dog Bite", "Wrongful Death", "Other"
   ];
 
-  var modal, form, overlay, subEl, successEl, currentContext;
+  var modal, form, overlay, subEl, successEl, errorEl, submitBtn, currentContext;
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -75,7 +103,8 @@
       '<textarea id="inq-details" name="details" rows="3"></textarea>' +
 
       '<p class="form-note">By submitting, you agree to be contacted about your inquiry. This is not legal advice and does not create an attorney-client relationship.</p>' +
-      '<button type="submit" class="btn">Submit Inquiry</button>' +
+      '<div class="modal-error" id="inquire-error" role="alert" hidden></div>' +
+      '<button type="submit" class="btn" id="inquire-submit">Submit Inquiry</button>' +
       "</form>" +
       '<div class="modal-success" id="inquire-success" hidden>' +
       "<p>Thank you. Your information has been submitted and a personal injury lawyer match will be in touch soon.</p>" +
@@ -89,6 +118,8 @@
     form = document.getElementById("inquire-form");
     subEl = document.getElementById("inquire-sub");
     successEl = document.getElementById("inquire-success");
+    errorEl = document.getElementById("inquire-error");
+    submitBtn = document.getElementById("inquire-submit");
 
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) closeModal();
@@ -111,6 +142,9 @@
     }
     form.hidden = false;
     successEl.hidden = true;
+    errorEl.hidden = true;
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Inquiry";
     form.reset();
     overlay.classList.add("open");
     document.body.style.overflow = "hidden";
@@ -121,10 +155,9 @@
     document.body.style.overflow = "";
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    var fd = new FormData(form);
-    var lead = {
+  // Build the insert payload using FIELD_MAP so column names live in one place.
+  function buildPayload(fd) {
+    var values = {
       name: fd.get("name"),
       email: fd.get("email"),
       phone: fd.get("phone"),
@@ -139,29 +172,78 @@
       business_city: currentContext.city || null,
       business_state: currentContext.state || null,
       source_site: "personalinjurylawyerhub.com",
-      source_url: window.location.href,
-      created_at: new Date().toISOString()
+      source_url: window.location.href
     };
+    var row = {};
+    Object.keys(values).forEach(function (key) {
+      var column = FIELD_MAP[key];
+      if (column) row[column] = values[key];
+    });
+    return row;
+  }
 
-    if (SUPABASE_ANON_KEY) {
-      fetch(SUPABASE_URL + "/rest/v1/" + SUPABASE_TABLE, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
-          "Prefer": "return=minimal"
-        },
-        body: JSON.stringify([lead])
-      }).catch(function (err) {
+  function showError(message, lead) {
+    // Never tell someone their inquiry went through when it did not — a lost
+    // lead is worse than a visible error, for them and for the site owner.
+    var mailto = "mailto:" + FALLBACK_EMAIL +
+      "?subject=" + encodeURIComponent("Personal injury inquiry") +
+      "&body=" + encodeURIComponent(
+        "Name: " + (lead.name || "") + "\nPhone: " + (lead.phone || "") +
+        "\nEmail: " + (lead.email || "") + "\nZip: " + (lead.zip || "") +
+        "\n\n" + (lead.details || "")
+      );
+    errorEl.innerHTML =
+      "<p><strong>We could not submit your inquiry.</strong> " + esc(message) + "</p>" +
+      '<p>Please try again, or email us directly at <a href="' + mailto + '">' +
+      FALLBACK_EMAIL + "</a> and we will follow up.</p>";
+    errorEl.hidden = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Inquiry";
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    errorEl.hidden = true;
+
+    var fd = new FormData(form);
+    var lead = {
+      name: fd.get("name"), email: fd.get("email"),
+      phone: fd.get("phone"), zip: fd.get("zip"), details: fd.get("details")
+    };
+    var row = buildPayload(fd);
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    fetch(SUPABASE_URL + "/rest/v1/" + SUPABASE_TABLE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify([row])
+    })
+      .then(function (res) {
+        if (res.ok) {
+          form.hidden = true;
+          errorEl.hidden = true;
+          successEl.hidden = false;
+          return;
+        }
+        return res.text().then(function (text) {
+          console.error("Supabase insert failed:", res.status, text);
+          var msg = res.status === 401 || res.status === 403
+            ? "The submission was rejected by the server."
+            : "The server returned an error (" + res.status + ").";
+          showError(msg, lead);
+        });
+      })
+      .catch(function (err) {
         console.error("Lead submission failed:", err);
+        showError("We could not reach the server. Please check your connection.", lead);
       });
-    } else {
-      console.warn("Supabase anon key not configured yet — lead was not persisted:", lead);
-    }
-
-    form.hidden = true;
-    successEl.hidden = false;
   }
 
   function init() {
