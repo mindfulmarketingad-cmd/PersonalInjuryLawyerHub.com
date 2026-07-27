@@ -12,6 +12,7 @@
 import { writeFileSync, mkdirSync, readFileSync, rmSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { VARIANT_CONTENT } from "./variant-content.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://personalinjurylawyerhub.com";
@@ -156,6 +157,16 @@ const VARIANTS = [
     certified: false
   },
   {
+    id: "property-owner-negligence",
+    citySlugPrefix: "property-owner-negligence-attorney",
+    stateSlugPrefix: "property-owner-negligence-attorneys",
+    cityH1Word: "Property Owner Negligence Attorney",
+    pluralWord: "Property Owner Negligence Attorneys",
+    selfLabel: "property owner negligence attorney",
+    shortLabel: "Property Owner",
+    certified: false
+  },
+  {
     id: "daycare-negligence",
     citySlugPrefix: "daycare-negligence-attorney",
     stateSlugPrefix: "daycare-negligence-attorneys",
@@ -189,6 +200,124 @@ function resourcesHtml(variant, stateCode) {
       <ul>
 ${list.map((r) => `        <li><a href="${r.url}" target="_blank" rel="noopener">${esc(r.label)}</a> &mdash; ${esc(r.note)}</li>`).join("\n")}
       </ul>`;
+}
+
+
+// ---------- Long-form, per-case-type editorial sections ----------
+// Gives each variant genuinely different copy rather than a swapped keyword.
+function editorialHtml(variant, place) {
+  const c = VARIANT_CONTENT[variant.id];
+  if (!c) return "";
+  return `      <h2>What a ${esc(variant.selfLabel)} handles</h2>
+      <p>${esc(c.handles)}</p>
+
+      <h2>Common ${esc(variant.selfLabel)} cases in ${esc(place)}</h2>
+      <ul>
+${c.scenarios.map((x) => `        <li>${esc(x)}</li>`).join("\n")}
+      </ul>
+
+      <h2>How these claims are proven</h2>
+      <p>${esc(c.proving)}</p>
+
+      <h2>Compensation in ${esc(variant.selfLabel)} claims</h2>
+      <p>${esc(c.damages)}</p>
+
+      <h2>Deadlines that apply</h2>
+      <p>Every state sets a statute of limitations for injury lawsuits, and claims involving a government entity often carry far shorter notice deadlines measured in months. Because those periods differ by state and by claim type, confirm the deadline that applies to your situation with a lawyer licensed in ${esc(place.split(", ").pop())} rather than relying on a general figure. Our guide to <a href="/blog/personal-injury-statute-of-limitations/">personal injury statutes of limitations</a> explains how the clock works and what can pause it.</p>`;
+}
+
+// Real, per-location firm links so each page carries unique internal links.
+function topFirmsHtml(g, place) {
+  const top = g.listings
+    .filter((l) => l.rating != null && l.slug)
+    .sort((a, b) => (b.rating - a.rating) || ((b.reviews || 0) - (a.reviews || 0)))
+    .slice(0, 8);
+  if (!top.length) return "";
+  return `      <h2>Highest-rated listings in ${esc(place)}</h2>
+      <p>These are the highest-rated firms currently listed in ${esc(place)}, based on public review data. Ratings are a starting point for comparison, not an endorsement or a measure of legal skill.</p>
+      <ul>
+${top
+    .map(
+      (l) =>
+        `        <li><a href="/partners/${l.slug}/">${esc(l.name)}</a> &mdash; ${l.rating.toFixed(1)} stars${l.reviews ? ` from ${l.reviews.toLocaleString()} reviews` : ""}${l.city ? `, ${esc(l.city)}` : ""}</li>`
+    )
+    .join("\n")}
+      </ul>`;
+}
+
+const BLOG_LINKS = [
+  ["/blog/how-to-choose-a-personal-injury-lawyer/", "How to choose a personal injury lawyer: 10 questions to ask"],
+  ["/blog/personal-injury-lawyer-cost-contingency-fees/", "What a personal injury lawyer costs: contingency fees explained"],
+  ["/blog/first-72-hours-after-a-car-accident/", "What to do in the first 72 hours after a car accident"],
+  ["/blog/personal-injury-statute-of-limitations/", "Personal injury statute of limitations: what you need to know"]
+];
+
+function blogLinksHtml() {
+  return `      <h2>Related reading</h2>
+      <ul>
+${BLOG_LINKS.map(([href, label]) => `        <li><a href="${href}">${esc(label)}</a></li>`).join("\n")}
+      </ul>`;
+}
+
+function localFaqs(variant, place, count) {
+  return [
+    {
+      q: `How many ${variant.pluralWord.toLowerCase()} are listed in ${place}?`,
+      a: `Our directory currently lists ${count} ${count === 1 ? "firm" : "firms"} serving ${place}. You can compare them on the map above by rating, review volume, and business type.`
+    },
+    {
+      q: `How much does it cost to hire a ${variant.selfLabel} in ${place}?`,
+      a: `Most personal injury firms work on contingency, meaning you pay attorney fees only if they recover money for you, and initial consultations are typically free. Percentages and the treatment of case costs vary between firms, so ask for the fee agreement in writing before signing.`
+    },
+    {
+      q: `Do I need a lawyer for a ${variant.selfLabel.replace(/ (lawyer|attorney)s?$/, "")} claim?`,
+      a: `Not every claim requires representation. Minor incidents with no lasting injury and undisputed fault can often be handled directly with the insurer. Representation tends to add the most value when injuries are significant, fault is disputed, multiple parties are involved, or an insurer has denied the claim or made a low offer.`
+    }
+  ];
+}
+
+function faqBlockHtml(faqs) {
+  return `      <h2>Frequently asked questions</h2>
+${faqs.map((f) => `      <h3>${esc(f.q)}</h3>\n      <p>${esc(f.a)}</p>`).join("\n")}`;
+}
+
+function faqJsonLdFor(faqs) {
+  return `\n  <script type="application/ld+json">\n  {\n    "@context": "https://schema.org",\n    "@type": "FAQPage",\n    "mainEntity": [\n${faqs
+    .map(
+      (f) =>
+        `      {\n        "@type": "Question",\n        "name": ${JSON.stringify(f.q)},\n        "acceptedAnswer": { "@type": "Answer", "text": ${JSON.stringify(f.a)} }\n      }`
+    )
+    .join(",\n")}\n    ]\n  }\n  </script>`;
+}
+
+
+// Other cities in the same state for this variant. Useful for small towns
+// with few local listings, and gives each page a unique internal link set.
+function nearbyCitiesHtml(variant, g, allCityGroups) {
+  const siblings = allCityGroups
+    .filter((c) => c.state === g.state && c.citySlug !== g.citySlug)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 12);
+  if (!siblings.length) return "";
+  return `      <h2>Other cities in ${esc(g.stateName)}</h2>
+      <p>If you are willing to work with a firm outside ${esc(g.city)}, these nearby ${esc(g.stateName)} cities have additional ${esc(variant.pluralWord.toLowerCase())} listed. Many firms handle cases throughout the state, so it is worth widening your search when local options are limited.</p>
+      <ul>
+${siblings
+    .map(
+      (c) =>
+        `        <li><a href="/find/${citySlugFor(variant, c)}/">${esc(variant.pluralWord)} in ${esc(c.city)}, ${esc(c.state)}</a> (${c.count} listed)</li>`
+    )
+    .join("\n")}
+      </ul>`;
+}
+
+// What working with a firm actually looks like — same across variants but
+// substantive, and it answers a question most visitors have.
+function processHtml(variant) {
+  return `      <h2>What to expect when you contact a firm</h2>
+      <p>Most ${esc(variant.pluralWord.toLowerCase())} offer a free initial consultation, and the great majority work on a contingency fee, meaning you owe no attorney fee unless they recover money for you. That first conversation is usually a screening call: they will ask what happened, when it happened, whether you have received medical treatment, and whether you have spoken with any insurer.</p>
+      <p>If the firm takes the case, the early work typically involves sending a letter of representation so adjusters contact them instead of you, gathering the police or incident report, collecting your medical records and bills, and identifying every insurance policy that might apply. They will generally wait to value the claim until your treatment stabilizes, because settling before then means settling without knowing what your future care will cost.</p>
+      <p>Before signing anything, ask who will handle your file day to day, what the fee percentage is and when it increases, whether case costs are deducted before or after the fee is calculated, and what happens to those costs if the case is unsuccessful. Get the fee agreement in writing and read it away from the office.</p>`;
 }
 
 // Some variants are specified as "[City], [State] X" rather than "X in [City], [State]".
@@ -292,7 +421,7 @@ function stateSlugFor(variant, g) {
 }
 
 // ---------- Shared page shell ----------
-function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, h1, listingsJson, contentHtml, featuredAlt }) {
+function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, h1, listingsJson, contentHtml, featuredAlt, faqs }) {
   const breadcrumbJsonLd = breadcrumbItems
     ? `\n  <script type="application/ld+json">\n  {\n    "@context": "https://schema.org",\n    "@type": "BreadcrumbList",\n    "itemListElement": [\n${breadcrumbItems.map((it, i) => `      { "@type": "ListItem", "position": ${i + 1}, "name": "${esc(it.name)}", "item": "${it.item}" }`).join(",\n")}\n    ]\n  }\n  </script>`
     : "";
@@ -315,7 +444,7 @@ function renderPage({ title, description, url, breadcrumbHtml, breadcrumbItems, 
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/vendor/leaflet.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${breadcrumbJsonLd}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${breadcrumbJsonLd}${faqs && faqs.length ? faqJsonLdFor(faqs) : ""}
 </head>
 <body>
   <header class="site-header">
@@ -450,10 +579,17 @@ for (const g of cityGroups) {
       { name: g.stateName, item: `${SITE}/find/${stateSlug}/` },
       { name: g.city, item: `${SITE}${url}` }
     ];
+    const cityFaqs = localFaqs(variant, `${g.city}, ${g.stateName}`, g.count);
     const contentHtml = `      <h2>${esc(variant.pluralWord)} Serving ${esc(g.city)}, ${esc(g.stateName)}</h2>
       <p>Comparing ${esc(variant.pluralWord.toLowerCase())} in ${esc(g.city)} starts with looking at overall rating, review volume, and what past clients say about their experience. Use the map above to see every listed firm's location, filter by business type or minimum rating, and sort by rating or number of reviews.</p>
       ${statsHtml(g, `${g.city}, ${g.stateName}`)}
+${editorialHtml(variant, `${g.city}, ${g.stateName}`)}
+${topFirmsHtml(g, `${g.city}, ${g.stateName}`)}
 ${resourcesHtml(variant, g.state)}
+${processHtml(variant)}
+${nearbyCitiesHtml(variant, g, cityGroups)}
+${faqBlockHtml(cityFaqs)}
+${blogLinksHtml()}
       ${relatedSearchesHtml(variant, g, citySlugFor)}
       <p>Browse every listing in <a href="/find/${stateSlug}/">${esc(g.stateName)}</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
 
@@ -465,7 +601,8 @@ ${resourcesHtml(variant, g.state)}
         h1: esc(headingFor(variant, `${g.city}, ${g.stateName}`)),
         listingsJson: listingsJsonFor(g.listings),
         contentHtml,
-        featuredAlt: `${variant.pluralWord} search map for ${g.city}, ${g.stateName}`
+        featuredAlt: `${variant.pluralWord} search map for ${g.city}, ${g.stateName}`,
+        faqs: cityFaqs
       })
     );
     cityPageCount++;
@@ -488,10 +625,16 @@ for (const g of stateGroups) {
       { name: "Find", item: `${SITE}/find.html` },
       { name: g.stateName, item: `${SITE}${url}` }
     ];
+    const stateFaqs = localFaqs(variant, g.stateName, g.count);
     const contentHtml = `      <h2>${esc(variant.pluralWord)} Serving ${esc(g.stateName)}</h2>
       <p>Comparing ${esc(variant.pluralWord.toLowerCase())} in ${esc(g.stateName)} starts with looking at overall rating, review volume, and what past clients say about their experience. Use the map above to see every listed firm's location, filter by business type or minimum rating, and sort by rating or number of reviews.</p>
       ${statsHtml(g, g.stateName)}
+${editorialHtml(variant, g.stateName)}
+${topFirmsHtml(g, g.stateName)}
 ${resourcesHtml(variant, g.state)}
+${processHtml(variant)}
+${faqBlockHtml(stateFaqs)}
+${blogLinksHtml()}
       ${relatedSearchesHtml(variant, g, stateSlugFor)}
       <p>Browse cities on our <a href="/find.html#${g.state}">Find page</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
 
@@ -503,7 +646,8 @@ ${resourcesHtml(variant, g.state)}
         h1: esc(headingFor(variant, g.stateName)),
         listingsJson: listingsJsonFor(g.listings),
         contentHtml,
-        featuredAlt: `${variant.pluralWord} search map for ${g.stateName}`
+        featuredAlt: `${variant.pluralWord} search map for ${g.stateName}`,
+        faqs: stateFaqs
       })
     );
     statePageCount++;
@@ -677,10 +821,7 @@ function variantLinksHtml(slugForFn, g) {
 const stateSections = statesForIndex.map((s) => {
   const cityLinks = s.cities
     .sort((a, b) => a.city.localeCompare(b.city))
-    .map((g) => `        <li data-city="${esc(g.city + ", " + s.state)}">
-          <span class="city-name">${esc(g.city)}, ${esc(s.state)} <span class="count">(${g.count})</span></span>
-          <span class="variant-links">${variantLinksHtml(citySlugFor, g)}</span>
-        </li>`)
+    .map((g) => `        <li data-city="${esc(g.city + ", " + s.state)}"><a href="/find/${citySlugFor(lawyerVariant, g)}/">${esc(g.city)}, ${esc(s.state)}</a> <span class="count">(${g.count})</span></li>`)
     .join("\n");
   return `      <div class="state-block" id="${s.state}" data-state-name="${esc(s.stateName)}" data-count="${s.count}">
         <h3>${esc(s.stateName)} <span class="count">(${s.count} listings)</span></h3>

@@ -590,3 +590,92 @@ a { color: var(--burgundy); }
 .post-card h3 a:hover { text-decoration: underline; }
 .post-card p { margin-bottom: 0.4rem; }
 .post-meta { font-family: Arial, Helvetica, sans-serif; font-size: 0.85rem; }
+
+/* ---------------------------------------------------------------
+   Mobile optimization
+   Touch targets >= 44px, single-column layouts, no horizontal
+   overflow, and readable type without zooming.
+   --------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .site-header .container { justify-content: center; text-align: center; }
+  .site-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 0; }
+  .site-nav a {
+    margin: 0;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.82rem;
+  }
+  .brand { font-size: 1.15rem; }
+  .brand-logo { height: 32px; }
+}
+
+@media (max-width: 700px) {
+  .page-title { padding: 1.6rem 0; }
+  .page-title h1 { font-size: 1.55rem; }
+  .hero-heading h1 { font-size: 1.5rem; }
+  .content { padding: 1.6rem 0 2.4rem; }
+  .content h2 { font-size: 1.25rem; }
+  .content h3 { font-size: 1.05rem; }
+
+  /* Map above list, both comfortably sized on a phone */
+  .map-panel { height: 48vh; min-height: 300px; }
+  .listings-panel { max-height: none; }
+  .map-shell-mini { height: auto; }
+
+  /* Controls stack to one column so labels are never truncated */
+  .controls,
+  .listing-controls,
+  .find-controls { grid-template-columns: 1fr; }
+  .controls .zip-row { flex-direction: column; }
+  .controls .toggles { flex-direction: column; }
+
+  /* 16px inputs prevent iOS Safari from auto-zooming on focus */
+  .controls input[type="text"],
+  .controls select,
+  .modal-box input,
+  .modal-box select,
+  .modal-box textarea,
+  .form-grid input,
+  .form-grid select,
+  .form-grid textarea { font-size: 16px; }
+
+  .btn, .toggle-btn { min-height: 44px; padding: 0.7rem 1.1rem; }
+  .inquire-btn { width: 100%; }
+
+  /* Single-column card and list layouts */
+  .card-grid { grid-template-columns: 1fr; }
+  .city-list { grid-template-columns: 1fr; }
+  .state-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Partner profile stacks; map gets a sensible fixed height */
+  .profile-layout { flex-direction: column; gap: 1rem; }
+  .profile-map { height: 280px; min-height: 0; width: 100%; }
+
+  /* Footer links wrap as comfortable tap targets */
+  .footer-links { gap: 0.2rem 0.9rem; }
+  .footer-links a { display: inline-block; padding: 0.45rem 0.2rem; }
+
+  /* Modal becomes near-full-screen and scrolls internally */
+  .modal-overlay { padding: 0; }
+  .modal-box { border-radius: 0; min-height: 100vh; padding: 1.25rem 1.1rem 2rem; }
+
+  .featured-image { max-width: 100%; }
+  .breadcrumb { font-size: 0.78rem; }
+}
+
+@media (max-width: 420px) {
+  .state-grid { grid-template-columns: 1fr; }
+  .card { padding: 0.85rem 0.9rem; }
+  .card blockquote { font-size: 0.84rem; }
+}
+
+/* Wide content must scroll inside its own container, never the page */
+.listing-table-wrap { -webkit-overflow-scrolling: touch; }
+img, svg { max-width: 100%; }
+
+/* find.html city rows: restore simple inline link styling */
+.city-list li a { color: var(--ink); text-decoration: none; }
+.city-list li a:hover { color: var(--burgundy); text-decoration: underline; }
+@media (max-width: 700px) {
+  .city-list li a { display: inline-block; padding: 0.35rem 0; }
+  .state-variant-links a { display: inline-block; padding: 0.35rem 0.15rem; }
+}
