@@ -762,3 +762,40 @@ img, svg { max-width: 100%; }
 @media (max-width: 700px) {
   .compare-table { min-width: 480px; font-size: 0.85rem; }
 }
+
+/* Real client reviews section (homepage) */
+.reviews-section { background: var(--white); border-top: 1px solid var(--line); }
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 1rem;
+}
+.review-card {
+  margin: 0;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--burgundy);
+  border-radius: 3px;
+  padding: 1.1rem 1.2rem;
+}
+.review-card .review-stars { color: var(--gold); letter-spacing: 0.12em; margin-bottom: 0.5rem; }
+.review-card blockquote {
+  margin: 0 0 0.75rem;
+  font-style: italic;
+  color: #3d3639;
+  font-size: 0.95rem;
+}
+.review-card blockquote::before { content: "\201C"; }
+.review-card blockquote::after { content: "\201D"; }
+.review-card figcaption {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+  padding-top: 0.6rem;
+}
+.review-card figcaption a { color: var(--burgundy-dark); font-weight: 700; text-decoration: none; }
+.review-card figcaption a:hover { text-decoration: underline; }
+.review-meta { color: var(--gray); font-size: 0.8rem; }
+@media (max-width: 700px) { .review-grid { grid-template-columns: 1fr; } }
