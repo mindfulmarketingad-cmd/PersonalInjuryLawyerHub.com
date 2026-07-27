@@ -666,8 +666,145 @@ function stars(rating) {
   return out;
 }
 
+
+// ---------- Per-listing derived facts (real data only) ----------
+// Everything here is computed from the listing set we actually have. We do
+// not assert practice areas, years in business, credentials, or outcomes for
+// a named real business, because we have no source for those.
+function listingContext(l) {
+  const cityPeers = data.listings.filter((x) => x.city === l.city && x.state === l.state);
+  const statePeers = data.listings.filter((x) => x.state === l.state);
+  const rated = (arr) => arr.filter((x) => x.rating != null);
+  const rankBy = (arr, key) => {
+    const sorted = rated(arr).slice().sort((a, b) => (b[key] || 0) - (a[key] || 0));
+    const idx = sorted.findIndex((x) => x.slug === l.slug);
+    return { rank: idx >= 0 ? idx + 1 : null, total: sorted.length };
+  };
+  return {
+    cityPeers, statePeers,
+    cityRating: rankBy(cityPeers, "rating"),
+    stateRating: rankBy(statePeers, "rating"),
+    stateReviews: rankBy(statePeers, "reviews"),
+    cityAvg: rated(cityPeers).length
+      ? rated(cityPeers).reduce((sum, x) => sum + x.rating, 0) / rated(cityPeers).length
+      : null
+  };
+}
+
+function ordinal(n) {
+  const s = ["th", "st", "nd", "rd"], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function ratingContextHtml(l, ctx, stateName) {
+  if (l.rating == null) {
+    return `      <h2>Review profile</h2>
+      <p>${esc(l.name)} does not currently have a public rating in our data set. That is not a negative signal on its own — newer offices and firms that do not actively request reviews often show few or none. It does mean you will want to rely more on a direct consultation and on your state bar's licensing and discipline lookup when evaluating this firm.</p>`;
+  }
+  const parts = [];
+  parts.push(`${esc(l.name)} holds a ${l.rating.toFixed(1)}-star rating from ${l.reviews.toLocaleString()} public review${l.reviews === 1 ? "" : "s"}.`);
+  if (ctx.cityRating.rank && ctx.cityRating.total > 1) {
+    parts.push(`Among the ${ctx.cityRating.total} rated firms we list in ${esc(l.city)}, that places it ${ordinal(ctx.cityRating.rank)} by rating.`);
+  }
+  if (ctx.cityAvg != null && ctx.cityPeers.length > 1) {
+    const diff = l.rating - ctx.cityAvg;
+    const cmp = Math.abs(diff) < 0.05 ? "in line with" : diff > 0 ? "above" : "below";
+    parts.push(`The average rating across ${esc(l.city)} listings is ${ctx.cityAvg.toFixed(1)}, so this firm sits ${cmp} the local average.`);
+  }
+  if (ctx.stateReviews.rank && ctx.stateReviews.total > 5) {
+    const pct = Math.round((ctx.stateReviews.rank / ctx.stateReviews.total) * 100);
+    if (pct <= 25) {
+      parts.push(`By review volume it is among the top ${pct <= 10 ? "10" : "25"} percent of ${esc(stateName)} listings in our directory, which generally indicates an established practice with a substantial client history.`);
+    }
+  }
+  return `      <h2>Review profile</h2>
+      <p>${parts.join(" ")}</p>
+      <p>Ratings are a useful filter but a poor substitute for diligence. Review counts reward firms that systematically ask for feedback, and a high average across a small number of reviews is far less meaningful than a slightly lower average across hundreds. Read what reviewers actually describe — responsiveness, clarity about fees, whether they felt informed — rather than the number alone.</p>`;
+}
+
+function availabilityHtml(l) {
+  if (!l.hours || !l.hours.length) return "";
+  const text = l.hours.join(" ").toLowerCase();
+  const notes = [];
+  if (text.includes("open 24 hours")) {
+    notes.push("This listing reports 24-hour availability. For personal injury firms that usually reflects an answering service or intake line rather than attorneys working overnight, but it does mean you can start a claim outside business hours.");
+  }
+  const weekend = l.hours.filter((h) => /^(Saturday|Sunday)/.test(h) && !/closed/i.test(h));
+  if (weekend.length && !text.includes("open 24 hours")) {
+    notes.push(`Weekend hours are listed for ${weekend.map((h) => h.split(":")[0]).join(" and ")}, which can matter if you cannot take time off work during the week.`);
+  }
+  if (!weekend.length && !text.includes("open 24 hours")) {
+    notes.push("Weekend hours are not listed, so plan to make contact on a weekday. Many firms will still return an after-hours message on the next business day.");
+  }
+  return `      <h2>Availability</h2>
+      <p>${esc(notes.join(" "))}</p>`;
+}
+
+function nearbyFirmsHtml(l, ctx) {
+  const others = ctx.cityPeers
+    .filter((x) => x.slug && x.slug !== l.slug && x.rating != null)
+    .sort((a, b) => (b.rating - a.rating) || ((b.reviews || 0) - (a.reviews || 0)))
+    .slice(0, 6);
+  if (!others.length) return "";
+  return `      <h2>Other firms listed in ${esc(l.city)}</h2>
+      <p>Most people contact more than one firm before deciding. Consultations are typically free, so comparing two or three costs you nothing but time.</p>
+      <ul>
+${others.map((x) => `        <li><a href="/partners/${x.slug}/">${esc(x.name)}</a> &mdash; ${x.rating.toFixed(1)} stars${x.reviews ? ` from ${x.reviews.toLocaleString()} reviews` : ""}</li>`).join("\n")}
+      </ul>`;
+}
+
+function consultationHtml(l) {
+  return `      <h2>Preparing to contact ${esc(l.name)}</h2>
+      <p>Bring as much of the following as you have. Firms can work without it, but a first consultation is far more productive when the basics are in front of them:</p>
+      <ul>
+        <li>The police or incident report, or the report number</li>
+        <li>Photographs of the scene, vehicles, hazard, or injuries</li>
+        <li>Names and contact details for any witnesses</li>
+        <li>Medical records, discharge paperwork, and bills received so far</li>
+        <li>Your insurance policy, and any correspondence from either insurer</li>
+        <li>Documentation of missed work and lost income</li>
+        <li>A written timeline of what happened while your memory is fresh</li>
+      </ul>
+      <p>Questions worth asking on that first call include who will handle your file day to day, what portion of the firm's practice is personal injury, what the contingency percentage is and when it increases, whether case costs are deducted before or after the fee is calculated, and what happens to those costs if the case is unsuccessful. Our guide to <a href="/blog/how-to-choose-a-personal-injury-lawyer/">choosing a personal injury lawyer</a> covers all ten questions in detail, and <a href="/blog/personal-injury-lawyer-cost-contingency-fees/">what a personal injury lawyer costs</a> explains the fee structure.</p>
+      <p>Before signing anything, confirm the firm's attorneys are licensed and in good standing through your state bar association's public lookup. It takes about two minutes and is the single most useful check available to you.</p>`;
+}
+
+function verifyHtml(l, stateName) {
+  return `      <h2>How we source this listing</h2>
+      <p>This profile is compiled from publicly available business data: the firm's name, address, business category, public rating and review count, published hours, and website. We do not add editorial commentary about a firm's abilities, and inclusion in this directory is not an endorsement or a referral.</p>
+      <p>We do not hold information about which specific case types ${esc(l.name)} accepts, the attorneys who practice there, their credentials, or their case history. Confirm all of that directly with the firm and with the ${esc(stateName)} state bar before making a decision. If you represent this business and something here is inaccurate or out of date, <a href="/contact.html">contact us</a> and we will correct or remove it at no charge.</p>`;
+}
+
+function partnerFaqs(l, ctx, stateName) {
+  const faqs = [
+    {
+      q: `Where is ${l.name} located?`,
+      a: `${l.name} is located at ${l.address}. Directions from your current location are available from the map on this page.`
+    },
+    {
+      q: `What are ${l.name}'s hours?`,
+      a: l.hours && l.hours.length
+        ? `Published hours are: ${l.hours.join("; ")}. Hours can change, so confirm directly before travelling.`
+        : `Published hours are not available for this listing in our data. Contact the firm directly to confirm when they are open.`
+    },
+    {
+      q: `How much does it cost to consult ${l.name}?`,
+      a: `We do not hold fee information for individual firms. Personal injury consultations are typically free and most firms in this practice area work on contingency, meaning you pay attorney fees only if they recover money for you. Confirm the specific fee structure with the firm and get it in writing.`
+    }
+  ];
+  if (l.rating != null) {
+    faqs.splice(1, 0, {
+      q: `Is ${l.name} well rated?`,
+      a: `${l.name} holds a ${l.rating.toFixed(1)}-star public rating from ${l.reviews.toLocaleString()} review${l.reviews === 1 ? "" : "s"}${ctx.cityRating.rank && ctx.cityRating.total > 1 ? `, ranking ${ordinal(ctx.cityRating.rank)} of ${ctx.cityRating.total} rated firms we list in ${l.city}` : ""}. Ratings reflect reviewer opinion and are not a measure of legal skill or likely outcome.`
+    });
+  }
+  return faqs;
+}
+
 function partnerPageHtml(l) {
   const stateName = STATE_NAMES[l.state] || l.state;
+  const ctx = listingContext(l);
+  const pFaqs = partnerFaqs(l, ctx, stateName);
   const title = `${l.name} - ${l.city}, ${stateName}`;
   const ratingSentence = l.rating
     ? ` Rated ${l.rating.toFixed(1)} stars from ${l.reviews} client reviews.`
@@ -710,7 +847,7 @@ function partnerPageHtml(l) {
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/vendor/leaflet.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${localBusinessJsonLd}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${localBusinessJsonLd}${faqJsonLdFor(pFaqs)}
 </head>
 <body>
   <header class="site-header">
@@ -760,6 +897,13 @@ function partnerPageHtml(l) {
           <div id="map" data-lat="${l.lat ?? ""}" data-lng="${l.lng ?? ""}" data-name="${esc(l.name)}"></div>
         </div>
       </div>
+
+${ratingContextHtml(l, ctx, stateName)}
+${availabilityHtml(l)}
+${consultationHtml(l)}
+${nearbyFirmsHtml(l, ctx)}
+${faqBlockHtml(pFaqs)}
+${verifyHtml(l, stateName)}
 
       <h2>Explore Personal Injury Lawyers Near ${esc(l.city)}, ${esc(stateName)}</h2>
       <ul>
