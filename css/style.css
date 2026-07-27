@@ -692,3 +692,73 @@ img, svg { max-width: 100%; }
 }
 .modal-error p { margin: 0 0 0.4rem; }
 .modal-error p:last-child { margin-bottom: 0; }
+
+/* ---------------------------------------------------------------
+   Blog comparison tables and inline bar charts
+   --------------------------------------------------------------- */
+.compare-wrap { overflow-x: auto; margin: 1.2rem 0 1.6rem; }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  min-width: 560px;
+}
+.compare-table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: Georgia, serif;
+  font-size: 0.92rem;
+  color: var(--gray);
+  padding-bottom: 0.5rem;
+}
+.compare-table th, .compare-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  text-align: left;
+}
+.compare-table thead th {
+  background: var(--burgundy);
+  color: var(--white);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.compare-table tbody tr:nth-child(even) { background: var(--cream); }
+.compare-table th[scope="row"] { font-weight: 700; color: var(--burgundy-dark); }
+
+/* Accessible CSS bar chart: each row is a labelled proportional bar */
+.bar-chart {
+  margin: 1.2rem 0 1.6rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.88rem;
+  max-width: 640px;
+}
+.bar-chart .bar-caption {
+  font-family: Georgia, serif;
+  color: var(--gray);
+  font-size: 0.92rem;
+  margin-bottom: 0.6rem;
+}
+.bar-row { margin-bottom: 0.7rem; }
+.bar-label { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.2rem; }
+.bar-label .bar-value { color: var(--burgundy-dark); font-weight: 700; white-space: nowrap; }
+.bar-track {
+  background: var(--line);
+  border-radius: 2px;
+  height: 1.1rem;
+  overflow: hidden;
+}
+.bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--burgundy);
+  border-radius: 2px;
+}
+.bar-fill.alt { background: var(--gold); }
+.bar-note { color: var(--gray); font-size: 0.82rem; margin-top: 0.5rem; }
+
+@media (max-width: 700px) {
+  .compare-table { min-width: 480px; font-size: 0.85rem; }
+}

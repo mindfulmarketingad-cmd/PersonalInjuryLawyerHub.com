@@ -136,8 +136,46 @@ export const POSTS = [
 
       <h2>The Order of Deductions Changes Your Check</h2>
       <p>This detail is worth understanding because it has a real dollar impact, and it is buried in the fee agreement.</p>
-      <p>Suppose a case settles for $90,000, the fee is one third, and case costs are $9,000. If the fee is calculated on the gross settlement, the lawyer takes $30,000, then $9,000 in costs comes out, leaving you $51,000. If costs are deducted first and the fee is calculated on the remainder, the fee is one third of $81,000, or $27,000, leaving you $54,000.</p>
+      <p>Suppose a case settles for $90,000, the fee is one third, and case costs are $9,000. The only thing that changes between these two columns is the order the deductions happen in:</p>
+
+      <div class="compare-wrap">
+        <table class="compare-table">
+          <caption>Same $90,000 settlement, same 33.3% fee, same $9,000 in costs — deducted in two different orders.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">Fee calculated on gross</th>
+              <th scope="col">Costs deducted first</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Settlement</th><td>$90,000</td><td>$90,000</td></tr>
+            <tr><th scope="row">Case costs</th><td>Deducted after the fee</td><td>&minus; $9,000 &rarr; $81,000</td></tr>
+            <tr><th scope="row">Attorney fee (33.3%)</th><td>&minus; $30,000 (of $90,000)</td><td>&minus; $27,000 (of $81,000)</td></tr>
+            <tr><th scope="row">Costs</th><td>&minus; $9,000</td><td>Already deducted</td></tr>
+            <tr><th scope="row">You receive</th><td><strong>$51,000</strong></td><td><strong>$54,000</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <p>Same settlement, same percentage, same costs — a $3,000 difference in what you take home, purely from the order of operations. Neither approach is improper, but you should know which one your agreement uses. Ask the firm to walk you through a sample calculation using round numbers.</p>
+
+      <div class="bar-chart">
+        <p class="bar-caption">Where a $90,000 settlement goes, using the more favorable of the two calculations above.</p>
+        <div class="bar-row">
+          <div class="bar-label"><span>Your net recovery</span><span class="bar-value">$54,000</span></div>
+          <div class="bar-track"><span class="bar-fill" style="width:60%"></span></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Attorney fee</span><span class="bar-value">$27,000</span></div>
+          <div class="bar-track"><span class="bar-fill alt" style="width:30%"></span></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Case costs</span><span class="bar-value">$9,000</span></div>
+          <div class="bar-track"><span class="bar-fill" style="width:10%"></span></div>
+        </div>
+        <p class="bar-note">Illustrative only. This does not yet account for medical liens or subrogation, which are deducted separately and are covered in the next section.</p>
+      </div>
 
       <h2>Medical Liens and Why Your Net Is Lower Than You Expect</h2>
       <p>Fees and costs are not the only claims on a settlement. If your health insurer, Medicare, Medicaid, or a hospital paid for treatment related to your injury, they may have a right to be reimbursed out of your recovery. This is generally called subrogation or a medical lien, and it is a major factor in what you ultimately keep.</p>
@@ -281,6 +319,29 @@ export const POSTS = [
       <p><strong>Of counsel</strong> is different and does carry meaning: it describes an attorney affiliated with a firm in an ongoing capacity without being a partner or associate — frequently a semi-retired or specialized practitioner.</p>
       <p><strong>Solicitor</strong> and <strong>barrister</strong> are real, functional distinctions in the United Kingdom and several other common-law countries, where solicitors traditionally handle client-facing work and barristers argue in higher courts. The U.S. never adopted a split profession, so these terms do not describe American practice.</p>
       <p><strong>Paralegal</strong> and <strong>legal assistant</strong> describe trained professionals who are not licensed to practice law, cannot give legal advice, and cannot represent you. They often do substantial work on personal injury files under attorney supervision, which is normal — but you should know when you are speaking with one.</p>
+
+      <div class="compare-wrap">
+        <table class="compare-table">
+          <caption>Legal titles you may encounter, and whether the distinction actually affects you.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Term</th>
+              <th scope="col">What it means</th>
+              <th scope="col">Can represent you?</th>
+              <th scope="col">Matters when hiring?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Lawyer</th><td>Someone trained in law</td><td>Yes, if licensed</td><td>No — same as attorney</td></tr>
+            <tr><th scope="row">Attorney</th><td>Interchangeable with lawyer in U.S. usage</td><td>Yes, if licensed</td><td>No — same as lawyer</td></tr>
+            <tr><th scope="row">Esquire (Esq.)</th><td>Honorary courtesy title</td><td>Yes, if licensed</td><td>No — not a credential</td></tr>
+            <tr><th scope="row">Of counsel</th><td>Affiliated with a firm, not partner or associate</td><td>Yes, if licensed</td><td>Sometimes — describes their role at the firm</td></tr>
+            <tr><th scope="row">Board certified</th><td>Certified specialist in a practice area</td><td>Yes, if licensed</td><td>Yes — a substantive credential</td></tr>
+            <tr><th scope="row">Solicitor / barrister</th><td>UK and other split professions</td><td>Not a U.S. designation</td><td>No — does not describe U.S. practice</td></tr>
+            <tr><th scope="row">Paralegal</th><td>Trained but unlicensed legal professional</td><td>No</td><td>Yes — know who is handling your file</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>The Credentials That Actually Distinguish Professionals</h2>
       <p>Here is where your attention is better spent.</p>
@@ -478,6 +539,27 @@ export const POSTS = [
       <p><strong>Medical malpractice</strong> commonly carries its own deadline and frequently additional procedural prerequisites, such as an affidavit or certificate of merit from a qualified medical expert filed with or before the complaint.</p>
       <p><strong>Wrongful death</strong> claims typically run from the date of death rather than the date of injury, and are often governed by a separate statute from ordinary personal injury.</p>
       <p><strong>Dram shop claims</strong>, product liability, and claims against certain regulated entities may each carry distinct periods.</p>
+
+      <div class="compare-wrap">
+        <table class="compare-table">
+          <caption>How the deadline analysis differs by claim type. Specific periods vary by state — this shows what changes, not how long you have.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Claim type</th>
+              <th scope="col">Clock usually starts</th>
+              <th scope="col">Extra requirements to watch for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Ordinary negligence (car accident, fall)</th><td>Date of the injury</td><td>Generally none beyond filing in time</td></tr>
+            <tr><th scope="row">Claim against a government entity</th><td>Date of the injury</td><td>Formal notice of claim, often due in months, well before any lawsuit</td></tr>
+            <tr><th scope="row">Medical malpractice</th><td>Date of negligent act, or discovery where recognized</td><td>Frequently a certificate or affidavit of merit from a medical expert; often a statute of repose</td></tr>
+            <tr><th scope="row">Wrongful death</th><td>Usually the date of death, not the injury</td><td>Often a separate statute; rules on who may file vary by state</td></tr>
+            <tr><th scope="row">Product liability</th><td>Date of injury, or discovery where recognized</td><td>Statutes of repose can bar older products regardless of discovery</td></tr>
+            <tr><th scope="row">Injury to a minor</th><td>Often tolled until the age of majority</td><td>Government notice deadlines may not be tolled the same way</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>Circumstances That Can Pause the Clock</h2>
       <p>Tolling refers to circumstances that pause the running of the limitations period. The most common are:</p>
