@@ -92,8 +92,111 @@ const VARIANTS = [
     selfLabel: "wrongful death lawyer",
     shortLabel: "Wrongful Death",
     certified: false // per spec: "There are [x] Wrongful Death Lawyers in..." (no "Certified")
+  },
+  {
+    id: "motorcycle-accident",
+    citySlugPrefix: "motorcycle-accident-attorney",
+    stateSlugPrefix: "motorcycle-accident-attorneys",
+    cityH1Word: "Motorcycle Accident Attorney",
+    pluralWord: "Motorcycle Accident Attorneys",
+    selfLabel: "motorcycle accident attorney",
+    shortLabel: "Motorcycle",
+    certified: false
+  },
+  {
+    id: "crime-victim",
+    citySlugPrefix: "crime-victim-attorney",
+    stateSlugPrefix: "crime-victim-attorneys",
+    cityH1Word: "Crime Victim Attorney",
+    pluralWord: "Crime Victim Attorneys",
+    selfLabel: "crime victim attorney",
+    shortLabel: "Crime Victim",
+    titleSuffix: true, // "[City], [State] Crime Victim Attorney"
+    certified: false
+  },
+  {
+    id: "uber-accident",
+    citySlugPrefix: "uber-accident-attorney",
+    stateSlugPrefix: "uber-accident-attorneys",
+    cityH1Word: "Uber Accident Attorney",
+    pluralWord: "Uber Accident Attorneys",
+    selfLabel: "Uber accident attorney",
+    shortLabel: "Uber",
+    certified: false
+  },
+  {
+    id: "drunk-driving",
+    citySlugPrefix: "drunk-driving-accident-attorney",
+    stateSlugPrefix: "drunk-driving-accident-attorneys",
+    cityH1Word: "Drunk Driving Accident Attorney",
+    pluralWord: "Drunk Driving Accident Attorneys",
+    selfLabel: "drunk driving accident attorney",
+    shortLabel: "Drunk Driving",
+    titleSuffix: true, // "[City], [State] Drunk Driving Accident Attorney"
+    certified: false
+  },
+  {
+    id: "premises-liability",
+    citySlugPrefix: "premises-liability-attorney",
+    stateSlugPrefix: "premises-liability-attorneys",
+    cityH1Word: "Premises Liability Attorney",
+    pluralWord: "Premises Liability Attorneys",
+    selfLabel: "premises liability attorney",
+    shortLabel: "Premises Liability",
+    certified: false
+  },
+  {
+    id: "medical-malpractice",
+    citySlugPrefix: "medical-malpractice-attorney",
+    stateSlugPrefix: "medical-malpractice-attorneys",
+    cityH1Word: "Medical Malpractice Attorney",
+    pluralWord: "Medical Malpractice Attorneys",
+    selfLabel: "medical malpractice attorney",
+    shortLabel: "Med Mal",
+    certified: false
+  },
+  {
+    id: "daycare-negligence",
+    citySlugPrefix: "daycare-negligence-attorney",
+    stateSlugPrefix: "daycare-negligence-attorneys",
+    cityH1Word: "Daycare Negligence Attorney",
+    pluralWord: "Daycare Negligence Attorneys",
+    selfLabel: "daycare negligence attorney",
+    shortLabel: "Daycare",
+    titleSuffix: true, // "[City], [State] Daycare Negligence Attorney"
+    certified: false
   }
 ];
+
+// Official state resources, shown only on the variant + state they actually
+// govern. Keyed by variant id, then state code.
+const STATE_RESOURCES = {
+  "daycare-negligence": {
+    GA: [
+      {
+        label: "Georgia DECAL Child Care Licensing Rules and Regulations (PDF)",
+        url: "https://www.decal.ga.gov/documents/attachments/CCLCRulesandRegulations.pdf",
+        note: "Published by Bright from the Start: Georgia Department of Early Care and Learning. These rules set the licensing standards Georgia child care programs must meet, including supervision ratios, staff qualifications, and health and safety requirements."
+      }
+    ]
+  }
+};
+
+function resourcesHtml(variant, stateCode) {
+  const list = (STATE_RESOURCES[variant.id] || {})[stateCode];
+  if (!list || !list.length) return "";
+  return `      <h2>Official State Resources</h2>
+      <ul>
+${list.map((r) => `        <li><a href="${r.url}" target="_blank" rel="noopener">${esc(r.label)}</a> &mdash; ${esc(r.note)}</li>`).join("\n")}
+      </ul>`;
+}
+
+// Some variants are specified as "[City], [State] X" rather than "X in [City], [State]".
+function headingFor(variant, place) {
+  return variant.titleSuffix
+    ? `${place} ${variant.cityH1Word}`
+    : `${variant.cityH1Word} in ${place}`;
+}
 
 const lawyerVariant = VARIANTS.find((v) => v.id === "lawyer");
 
@@ -337,7 +440,7 @@ for (const g of cityGroups) {
     const slug = citySlugFor(variant, g);
     const stateSlug = stateSlugFor(variant, g);
 
-    const title = `${variant.cityH1Word} in ${g.city}, ${g.stateName}`;
+    const title = headingFor(variant, `${g.city}, ${g.stateName}`);
     const description = descriptionFor(variant, g.count, `${g.city}, ${g.stateName}`);
     const url = `/find/${slug}/`;
     const breadcrumbHtml = `<a href="/find.html">Find</a> &rsaquo; <a href="/find/${stateSlug}/">${esc(g.stateName)}</a> &rsaquo; ${esc(g.city)}`;
@@ -350,6 +453,7 @@ for (const g of cityGroups) {
     const contentHtml = `      <h2>${esc(variant.pluralWord)} Serving ${esc(g.city)}, ${esc(g.stateName)}</h2>
       <p>Comparing ${esc(variant.pluralWord.toLowerCase())} in ${esc(g.city)} starts with looking at overall rating, review volume, and what past clients say about their experience. Use the map above to see every listed firm's location, filter by business type or minimum rating, and sort by rating or number of reviews.</p>
       ${statsHtml(g, `${g.city}, ${g.stateName}`)}
+${resourcesHtml(variant, g.state)}
       ${relatedSearchesHtml(variant, g, citySlugFor)}
       <p>Browse every listing in <a href="/find/${stateSlug}/">${esc(g.stateName)}</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
 
@@ -358,7 +462,7 @@ for (const g of cityGroups) {
       join(findDir, slug, "index.html"),
       renderPage({
         title, description, url, breadcrumbHtml, breadcrumbItems,
-        h1: `${variant.cityH1Word} in ${esc(g.city)}, ${esc(g.stateName)}`,
+        h1: esc(headingFor(variant, `${g.city}, ${g.stateName}`)),
         listingsJson: listingsJsonFor(g.listings),
         contentHtml,
         featuredAlt: `${variant.pluralWord} search map for ${g.city}, ${g.stateName}`
@@ -375,7 +479,7 @@ for (const g of stateGroups) {
   for (const variant of VARIANTS) {
     const slug = stateSlugFor(variant, g);
 
-    const title = `${variant.cityH1Word} in ${g.stateName}`;
+    const title = headingFor(variant, g.stateName);
     const description = descriptionFor(variant, g.count, g.stateName);
     const url = `/find/${slug}/`;
     const breadcrumbHtml = `<a href="/find.html">Find</a> &rsaquo; ${esc(g.stateName)}`;
@@ -387,6 +491,7 @@ for (const g of stateGroups) {
     const contentHtml = `      <h2>${esc(variant.pluralWord)} Serving ${esc(g.stateName)}</h2>
       <p>Comparing ${esc(variant.pluralWord.toLowerCase())} in ${esc(g.stateName)} starts with looking at overall rating, review volume, and what past clients say about their experience. Use the map above to see every listed firm's location, filter by business type or minimum rating, and sort by rating or number of reviews.</p>
       ${statsHtml(g, g.stateName)}
+${resourcesHtml(variant, g.state)}
       ${relatedSearchesHtml(variant, g, stateSlugFor)}
       <p>Browse cities on our <a href="/find.html#${g.state}">Find page</a>, or search a different area from our <a href="/">nationwide directory</a>.</p>`;
 
@@ -395,7 +500,7 @@ for (const g of stateGroups) {
       join(findDir, slug, "index.html"),
       renderPage({
         title, description, url, breadcrumbHtml, breadcrumbItems,
-        h1: `${variant.cityH1Word} in ${esc(g.stateName)}`,
+        h1: esc(headingFor(variant, g.stateName)),
         listingsJson: listingsJsonFor(g.listings),
         contentHtml,
         featuredAlt: `${variant.pluralWord} search map for ${g.stateName}`

@@ -578,3 +578,15 @@ a { color: var(--burgundy); }
   #map { position: relative; height: 100%; }
   .site-nav a { margin-left: 0.9rem; font-size: 0.85rem; }
 }
+
+/* Blog index post cards */
+.post-list { margin-top: 1.2rem; }
+.post-card {
+  border-top: 1px solid var(--line);
+  padding: 1.1rem 0;
+}
+.post-card h3 { margin: 0 0 0.35rem; font-size: 1.2rem; }
+.post-card h3 a { color: var(--burgundy-dark); text-decoration: none; }
+.post-card h3 a:hover { text-decoration: underline; }
+.post-card p { margin-bottom: 0.4rem; }
+.post-meta { font-family: Arial, Helvetica, sans-serif; font-size: 0.85rem; }
