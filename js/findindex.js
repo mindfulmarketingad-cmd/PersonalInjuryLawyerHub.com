@@ -57,7 +57,17 @@
     sorted.forEach(function (block) { listEl.appendChild(block); });
   }
 
+  var trackTimer = null;
+  function trackSearch() {
+    clearTimeout(trackTimer);
+    trackTimer = setTimeout(function () {
+      var q = searchInput.value.trim();
+      if (q && window.PILHAnalytics) window.PILHAnalytics.trackEvent("search", { query: q });
+    }, 700);
+  }
+
   searchInput.addEventListener("input", apply);
+  searchInput.addEventListener("input", trackSearch);
   filterSel.addEventListener("change", apply);
   sortSel.addEventListener("change", function () {
     sort();

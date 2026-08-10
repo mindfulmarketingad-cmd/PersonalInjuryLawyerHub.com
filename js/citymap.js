@@ -102,8 +102,8 @@
         "<strong>" + esc(l.name) + "</strong><br>" +
         esc(l.address) + "<br>" +
         (l.rating ? l.rating.toFixed(1) + " stars (" + l.reviews + " reviews)<br>" : "No rating yet<br>") +
-        (l.website ? '<a href="' + esc(l.website) + '" target="_blank" rel="noopener nofollow">Website</a> &middot; ' : "") +
-        '<a href="' + directionsUrl + '" target="_blank" rel="noopener">Directions</a>';
+        (l.website ? '<a href="' + esc(l.website) + '" target="_blank" rel="noopener nofollow" class="track-website" data-slug="' + esc(l.slug || "") + '" data-name="' + esc(l.name) + '" data-city="' + esc(l.city || "") + '">Website</a> &middot; ' : "") +
+        '<a href="' + directionsUrl + '" target="_blank" rel="noopener" class="track-directions" data-slug="' + esc(l.slug || "") + '" data-name="' + esc(l.name) + '" data-city="' + esc(l.city || "") + '">Directions</a>';
       marker.bindPopup(popup);
       markersById[l.id] = marker;
       markerLayer.addLayer(marker);
@@ -191,4 +191,5 @@
   });
 
   applyFilters();
+
 })();

@@ -124,6 +124,10 @@
     el.addEventListener("change", applyFilters);
   });
   searchInput.addEventListener("input", debounce(applyFilters, 200));
+  searchInput.addEventListener("input", debounce(function () {
+    var q = searchInput.value.trim();
+    if (q && window.PILHAnalytics) window.PILHAnalytics.trackEvent("search", { query: q });
+  }, 700));
 
   fetch("/data/lawyers.json")
     .then(function (r) { return r.json(); })

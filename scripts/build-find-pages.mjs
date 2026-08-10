@@ -522,6 +522,7 @@ ${contentHtml}
   <script src="/vendor/leaflet.js"></script>
   <script src="/js/citymap.js"></script>
   <script src="/js/inquire.js"></script>
+  <script src="/js/analytics-client.js"></script>
 </body>
 </html>
 `;
@@ -849,7 +850,7 @@ function partnerPageHtml(l) {
   <link rel="stylesheet" href="/vendor/leaflet.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9332749804326149" crossorigin="anonymous"></script>${localBusinessJsonLd}${faqJsonLdFor(pFaqs)}
 </head>
-<body>
+<body data-listing-slug="${esc(l.slug || "")}" data-listing-name="${esc(l.name || "")}" data-listing-city="${esc(l.city || "")}">
   <header class="site-header">
     <div class="container">
       <a class="brand" href="/"><img src="/assets/logo/logo.svg" alt="Personal Injury Lawyer Hub" class="brand-logo">Personal Injury <span>Lawyer Hub</span></a>
@@ -881,11 +882,11 @@ function partnerPageHtml(l) {
             ? `<div class="rating"><span class="stars">${stars(l.rating)}</span> ${l.rating.toFixed(1)} (${l.reviews} reviews)</div>`
             : `<div class="rating">No rating yet</div>`}
           <div class="addr">${esc(l.address)}</div>
-          ${l.website ? `<div class="website"><a href="${esc(l.website)}" target="_blank" rel="noopener nofollow">Visit Website</a></div>` : ""}
+          ${l.website ? `<div class="website"><a href="${esc(l.website)}" target="_blank" rel="noopener nofollow" class="track-website" data-slug="${esc(l.slug || "")}" data-name="${esc(l.name)}" data-city="${esc(l.city || "")}">Visit Website</a></div>` : ""}
           ${l.quote ? `<blockquote>&ldquo;${esc(l.quote)}&rdquo;</blockquote>` : ""}
           ${l.hours && l.hours.length ? `<div class="hours"><h3>Business Hours</h3><ul>${l.hours.map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div>` : ""}
           <p class="profile-actions">
-            <a class="btn btn-outline" href="${directionsUrl}" target="_blank" rel="noopener">Get Directions</a>
+            <a class="btn btn-outline track-directions" href="${directionsUrl}" target="_blank" rel="noopener" data-slug="${esc(l.slug || "")}" data-name="${esc(l.name)}" data-city="${esc(l.city || "")}">Get Directions</a>
             <button class="btn inquire-btn" type="button" data-name="${esc(l.name)}" data-slug="${esc(l.slug || "")}" data-city="${esc(l.city || "")}" data-state="${esc(stateName)}">Inquire</button>
           </p>
           <div class="claim-box">
@@ -932,6 +933,7 @@ ${verifyHtml(l, stateName)}
   <script src="/vendor/leaflet.js"></script>
   <script src="/js/partnermap.js"></script>
   <script src="/js/inquire.js"></script>
+  <script src="/js/analytics-client.js"></script>
 </body>
 </html>
 `;
@@ -1054,6 +1056,7 @@ ${stateSections}
     </div>
   </footer>
   <script src="/js/findindex.js"></script>
+  <script src="/js/analytics-client.js"></script>
 </body>
 </html>
 `;

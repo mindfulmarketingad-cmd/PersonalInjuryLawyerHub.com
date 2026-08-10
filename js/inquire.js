@@ -252,12 +252,18 @@
       var btn = e.target.closest(".inquire-btn");
       if (!btn) return;
       e.preventDefault();
-      openModal({
+      var context = {
         name: btn.getAttribute("data-name"),
         slug: btn.getAttribute("data-slug"),
         city: btn.getAttribute("data-city"),
         state: btn.getAttribute("data-state")
-      });
+      };
+      if (window.PILHAnalytics) {
+        window.PILHAnalytics.trackEvent("inquire_click", {
+          listingSlug: context.slug, listingName: context.name, city: context.city
+        });
+      }
+      openModal(context);
     });
   }
 
