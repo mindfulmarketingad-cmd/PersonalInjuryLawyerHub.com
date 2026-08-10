@@ -594,5 +594,58 @@ export const POSTS = [
     title: "What Happens If a Car Accident Causes a Permanent Disability?",
     description:
       "How permanent disability is diagnosed after a crash, what compensation may be available, and why settling before maximum medical improvement is risky."
+  },
+
+  {
+    slug: "80-20-rule-for-lawyers-pareto-principle",
+    date: "2026-08-10",
+    title: "What Is the 80/20 Rule for Lawyers? The Pareto Principle Explained",
+    crumb: "The 80/20 Rule for Lawyers",
+    description:
+      "What the Pareto Principle actually says, how it shows up in law firm caseloads and case selection, and what it means for you when you are choosing a personal injury lawyer.",
+    standfirst:
+      "A 130-year-old observation about land ownership in Italy turns out to explain a lot about how law firms actually operate.",
+    cta:
+      "If you take the 80/20 idea seriously, the move is to compare a small, well-chosen shortlist rather than contact everyone. Our directory lets you filter by rating and review volume to build that shortlist in minutes.",
+    faqs: [
+      {
+        q: "What is the 80/20 rule in simple terms?",
+        a: "It is the observation that in many systems, roughly 80 percent of outcomes come from roughly 20 percent of causes. The numbers are not a law of nature and rarely land exactly on 80 and 20 — the point is that the distribution is lopsided, not even."
+      },
+      {
+        q: "Does the 80/20 rule mean 80 percent of lawyers are bad?",
+        a: "No. It is a statement about concentration of outcomes, not a judgment about quality. A lawyer can be fully competent and simply have a caseload weighted toward smaller matters, or be early in building a practice. Revenue concentration and skill are related but not the same thing."
+      },
+      {
+        q: "How does this affect me as someone looking for a personal injury lawyer?",
+        a: "Mainly by suggesting where to spend your time: a small, carefully compared shortlist of firms is usually more productive than a long list of quick calls. It is also a reason not to be discouraged if a strong firm is selective about which cases it accepts — that selectivity is often the same concentration effect at work."
+      }
+    ],
+    body: `      <p>The Pareto Principle, better known as the 80/20 rule, comes from an Italian economist named Vilfredo Pareto, who noticed in 1896 that roughly 80 percent of the land in Italy was owned by about 20 percent of the population. The specific numbers were a starting observation, not a law of physics, but the underlying pattern — a small share of inputs driving most of the outcome — turned out to show up almost everywhere people later looked for it: sales, software bugs, customer complaints, and, as it happens, law firms.</p>
+      <p>None of this is specific to personal injury law. But if you are trying to understand how firms actually operate, and how to make sense of what you see when you are comparing them, it is a genuinely useful lens.</p>
+
+      <h2>Where the 80/20 Pattern Shows Up in Law Firms</h2>
+      <p>Ask most managing partners privately and you will hear some version of the same three patterns, all recognizably Pareto-shaped:</p>
+      <h3>Revenue concentration</h3>
+      <p>A large share of a firm's revenue in a given year often comes from a small share of its cases — frequently the catastrophic injury and wrongful death matters rather than the high-volume, lower-value claims. A firm might close a hundred cases and find that four or five of them produced most of the year's fees.</p>
+      <h3>Referral concentration</h3>
+      <p>New client sources tend to follow the same shape. A handful of past clients, referring attorneys, or medical providers frequently account for most of a firm's new business, while a long tail of one-off sources contributes the rest. This is part of why client experience matters commercially to a firm, not just ethically — a satisfied client who refers three friends is worth more than an advertising dollar spent chasing a stranger.</p>
+      <h3>Attorney time and case complexity</h3>
+      <p>Within a caseload, a small number of complex, disputed, or high-damages cases typically consume a disproportionate share of an attorney's actual working hours, while many more straightforward claims move through a fairly standardized process. This is one reason firms build teams — case managers and paralegals handle the higher-volume, lower-complexity work so attorneys can concentrate on the cases where their judgment matters most. See our guide on <a href="/blog/how-to-choose-a-personal-injury-lawyer/">who actually handles your case</a> for what to ask about this directly.</p>
+
+      <h2>Why This Explains Case Selectivity</h2>
+      <p>If you have ever contacted a well-regarded personal injury firm and been told they could not take your case, the 80/20 pattern is often the reason, even if no one used that phrase. A firm that has learned where its results actually come from has a rational incentive to concentrate resources on cases with strong liability and significant damages, and to decline cases that are unlikely to justify the cost of litigating them — cases with unclear fault, minor injuries, or difficult collection prospects.</p>
+      <p>This is not a comment on whether your case has merit as a human matter. It is a business reality of how contingency-fee practice works: the firm advances its own money and time against an uncertain outcome, so it has to be selective about where it takes that risk. A "no" from one firm, especially a well-regarded one, is not necessarily a verdict on your claim — it may simply reflect that firm's particular risk tolerance and caseload strategy. It is a good reason to get a second opinion rather than stop looking.</p>
+
+      <h2>What This Means When You Are the One Choosing</h2>
+      <p>The practical takeaway runs in your favor, not against it. If a small number of firms and a small number of case factors drive most outcomes, then the highest-value thing you can do is spend your limited time comparing a focused shortlist well, rather than casting the widest possible net.</p>
+      <ul>
+        <li><strong>Two or three well-compared consultations beat ten rushed ones.</strong> Consultations are typically free, so use the time to ask the specific questions in our <a href="/blog/how-to-choose-a-personal-injury-lawyer/">choosing a lawyer guide</a> rather than collecting a large number of shallow impressions.</li>
+        <li><strong>Rating and review volume are a reasonable first filter, not a final answer.</strong> A firm with thousands of reviews and a consistently strong rating has, almost by definition, produced good outcomes for a large enough sample that the signal means something. Use that to build your shortlist, then dig deeper on the specifics of your case.</li>
+        <li><strong>A decline is information, not a dead end.</strong> If a strong firm passes on your case, ask why if they will tell you, and use that information when you talk to the next one.</li>
+      </ul>
+
+      <h2>A Note on How We Fit In</h2>
+      <p>We built this directory around the same idea. Rather than asking you to evaluate every personal injury firm in your state, we show ratings, review counts, and a quoted client review so you can identify the handful worth an actual conversation. The 80/20 rule suggests that is where your effort belongs.</p>`
   }
 ];
