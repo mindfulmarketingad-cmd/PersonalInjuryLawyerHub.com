@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo/logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
+  <title>Site Analytics | Personal Injury Lawyer Hub</title>
+  <meta name="description" content="Live, public traffic and lead-engagement analytics for Personal Injury Lawyer Hub — sessions, searches, and per-firm engagement across the directory.">
+  <link rel="canonical" href="https://personalinjurylawyerhub.com/dashboard.html">
+  <meta name="robots" content="noindex, follow">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/"><img src="/assets/logo/logo.svg" alt="Personal Injury Lawyer Hub" class="brand-logo">Personal Injury <span>Lawyer Hub</span></a>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about.html">About</a>
+        <a href="/find.html">Find</a>
+        <a href="/partners.html">Partners</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-title">
+    <div class="container">
+      <h1>Site Analytics</h1>
+      <p>Live, public traffic and lead-engagement data for Personal Injury Lawyer Hub. No account data or personal information is shown here — every number below is aggregated from anonymous, browser-generated session activity.</p>
+    </div>
+  </section>
+
+  <main class="content dashboard">
+    <div class="container">
+      <div class="dash-controls">
+        <div class="range-select" role="group" aria-label="Date range">
+          <button type="button" class="range-btn" data-days="7">Last 7 Days</button>
+          <button type="button" class="range-btn on" data-days="30">Last 30 Days</button>
+          <button type="button" class="range-btn" data-days="90">Last 90 Days</button>
+        </div>
+        <p class="dash-status" id="dash-status">Loading…</p>
+      </div>
+
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card"><span class="stat-value" id="stat-sessions">—</span><span class="stat-label">Sessions</span></div>
+        <div class="stat-card"><span class="stat-value" id="stat-visitors">—</span><span class="stat-label">Unique Visitors</span></div>
+        <div class="stat-card"><span class="stat-value" id="stat-impressions">—</span><span class="stat-label">Page &amp; Listing Views</span></div>
+        <div class="stat-card"><span class="stat-value" id="stat-searches">—</span><span class="stat-label">Searches</span></div>
+        <div class="stat-card"><span class="stat-value" id="stat-lead-actions">—</span><span class="stat-label">Lead Actions</span></div>
+        <div class="stat-card stat-card-leads"><span class="stat-value" id="stat-leads">—</span><span class="stat-label">Leads Received</span></div>
+      </div>
+      <p class="form-note dash-note">"Lead Actions" counts on-site engagement signals (directions, website, and inquire clicks) — a proxy for interest. "Leads Received" is the actual count of completed inquiry submissions, tracked separately so the two are never conflated.</p>
+
+      <h2>Daily Activity</h2>
+      <div class="chart-wrap" id="trend-chart"><p class="no-results">Loading chart…</p></div>
+
+      <h2>Action Breakdown</h2>
+      <div class="bar-chart" id="action-chart"><p class="bar-caption">Loading…</p></div>
+
+      <h2>Live Activity</h2>
+      <div class="live-panel">
+        <p class="live-counter"><strong id="live-count">0</strong> events since you opened this page</p>
+        <ul class="live-feed" id="live-feed">
+          <li class="live-empty">Waiting for activity…</li>
+        </ul>
+      </div>
+
+      <h2>Engagement by Business</h2>
+      <div class="compare-wrap">
+        <table class="compare-table" id="business-table">
+          <caption>Every firm with at least one tracked event in the selected range, ranked by total engagement.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Business</th>
+              <th scope="col">City</th>
+              <th scope="col">Views</th>
+              <th scope="col">Directions</th>
+              <th scope="col">Website</th>
+              <th scope="col">Inquire</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody id="business-rows"><tr><td colspan="7" class="no-results">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/disclaimer.html">Disclaimer</a></li>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/sitemap.html">Sitemap</a></li>
+      </ul>
+      <p class="footer-legal">Personal Injury Lawyer Hub is a directory service only. We are not a law firm and do not provide legal advice. Listing information is compiled from publicly available sources and does not constitute an endorsement or attorney referral. Copyright 2026 PersonalInjuryLawyerHub.com. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/vendor/supabase.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
